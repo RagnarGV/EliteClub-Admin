@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mx-auto">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [routerLink]="['/home']"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Home
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [routerLink]="['/schedule']"
+          routerLinkActive="active"
+        >
+          Schedule
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [routerLink]="['/waitlist']"
+          routerLinkActive="active"
+        >
+          Waitlist
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [routerLink]="['/gallery']"
+          routerLinkActive="active"
+        >
+          Gallery
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
