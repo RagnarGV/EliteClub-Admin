@@ -3,15 +3,10 @@ const path = require("path");
 const express = require("express");
 const { PrismaClient } = require("@prisma/client");
 const cors = require("cors");
-const twilio = require("twilio");
 
 const app = express();
 app.use(express.urlencoded());
 const prisma = new PrismaClient();
-const client = twilio(
-  "ACef1b76c887299071d506b96b65ead92a",
-  "a12bc192df57e2037a8c3b65fb1bac24"
-);
 
 app.use(cors());
 
