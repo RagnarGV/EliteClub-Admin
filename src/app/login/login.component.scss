@@ -1,0 +1,67 @@
+.auth-form {
+  background: white;
+  padding: 2rem;
+  border: 3px solid burlywood;
+  box-shadow: 5px 5px 0px goldenrod;
+  width: 350px;
+  text-align: center;
+  margin: 50px auto;
+
+  .form-title {
+    font-family: "Trebuchet MS";
+    font-weight: bold;
+    font-size: 2rem;
+    color: goldenrod;
+    margin-bottom: 1rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+    text-align: left;
+
+    label {
+      font-weight: bold;
+      color: goldenrod;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 8px;
+      border: 2px solid burlywood;
+      border-radius: 0%;
+      outline: none;
+      transition: all 0.3s ease-in-out;
+
+      &:focus {
+        border-color: goldenrod;
+        box-shadow: 0 0 5px goldenrod;
+      }
+    }
+
+    .error-text {
+      color: red;
+      font-size: 0.8rem;
+    }
+  }
+
+  .btn-auth {
+    width: 100%;
+    padding: 10px;
+    font-weight: bold;
+    background-color: goldenrod;
+    color: white;
+    border: none;
+    box-shadow: 5px 5px 0px black;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      background-color: darkgoldenrod;
+      box-shadow: 2px 2px 0px goldenrod;
+    }
+  }
+
+  .error-message {
+    color: red;
+    margin-top: 1rem;
+  }
+}

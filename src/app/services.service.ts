@@ -26,10 +26,35 @@ export interface Schedule {
   providedIn: 'root',
 })
 export class ServicesService {
-  private apiUrl = 'https://eliteclub-api.onrender.com/api';
-
+  // private apiUrl = 'https://eliteclub-api.onrender.com/api';
+  private apiUrl = 'http://localhost:3000/api';
   constructor() {}
+  async register(data: any): Promise<any> {
+    try {
+      const response = await axios.post(this.apiUrl + '/register', data);
+      return response.data;
+    } catch (error: any) {
+      throw error.response ? error.response.data : error;
+    }
+  }
+  async login(data: any): Promise<any> {
+    try {
+      const response = await axios.post(this.apiUrl + '/login', data);
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+      }
+      return response.data;
+    } catch (error: any) {
+      throw error.response ? error.response.data : error;
+    }
+  }
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('token');
+  }
 
+  logout(): void {
+    localStorage.removeItem('token');
+  }
   async getSchedule(): Promise<Schedule[]> {
     const response = await axios.get<Schedule[]>(this.apiUrl + '/schedule');
     return response.data;
@@ -83,7 +108,7 @@ export class ServicesService {
     await axios.put(`${this.apiUrl}/gallery/${id}`, updatedData);
   }
 
-  async fetchWaitlist() {
+  async getWaitlist() {
     const response = await axios.get(this.apiUrl + '/waitlist');
     return response.data;
   }
@@ -91,5 +116,11 @@ export class ServicesService {
   async addToWaitlist(data: any): Promise<any> {
     const response = await axios.post(`${this.apiUrl}/waitlist`, data);
     return response.data;
+  }
+  async updateToWaitlist(id: string, updatedData: any): Promise<any> {
+    await axios.put(`${this.apiUrl}/waitlist/${id}`, updatedData);
+  }
+  async deleteWaitlist(id: string): Promise<void> {
+    await axios.delete(`${this.apiUrl}/waitlist/${id}`);
   }
 }

@@ -1,0 +1,318 @@
+<div>
+  <div align="center">
+    <h1>Waitlist</h1>
+  </div>
+
+  <div
+    class="modal fade"
+    id="UpdateModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            Update Waitlist
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="UpdateForm">
+            <label for="firstName">First Name</label>
+            <input
+              type="text"
+              name="firstName"
+              id="firstName"
+              formControlName="firstName"
+              [ngClass]="{ 'is-invalid': fvalupdate['firstName'].errors }"
+              class="form-control"
+            />
+            <div
+              *ngIf="fvalupdate['firstName'].errors && submitted"
+              class="invalid-feedback"
+            >
+              First Name is required.
+            </div>
+            <label for="lastInitial">Last Initail</label>
+            <input
+              type="text"
+              name="lastInitial"
+              id="lastInitial"
+              formControlName="lastInitial"
+              [ngClass]="{ 'is-invalid': fvalupdate['lastInitial'].errors }"
+              class="form-control"
+            />
+            <div
+              *ngIf="fvalupdate['lastInitial'].errors && submitted"
+              class="invalid-feedback"
+            >
+              Last Initail is required.
+            </div>
+            <label for="phone">Phone</label>
+            <input
+              type="text"
+              name="phone"
+              id="phone"
+              formControlName="phone"
+              [ngClass]="{ 'is-invalid': fvalupdate['phone'].errors }"
+              class="form-control"
+            />
+            <div
+              *ngIf="fvalupdate['phone'].errors && submitted"
+              class="invalid-feedback"
+            >
+              Phone is required.
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            [disabled]="!UpdateForm.valid"
+            (click)="updateSchedule()"
+          >
+            Update
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="AddScheduleModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="AddModalTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="AddModalTitle">Add Waitlist</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="AddForm" role="form">
+            <label for="firstName">First Name</label>
+            <input
+              type="text"
+              name="firstName"
+              id="firstName"
+              formControlName="firstName"
+              [ngClass]="{ 'is-invalid': fvalupdate['firstName'].errors }"
+              class="form-control"
+            />
+            <div
+              *ngIf="fvalupdate['firstName'].errors && submitted"
+              class="invalid-feedback"
+            >
+              First Name is required.
+            </div>
+            <label for="lastInitial">Last Initail</label>
+            <input
+              type="text"
+              name="lastInitial"
+              id="lastInitial"
+              formControlName="lastInitial"
+              [ngClass]="{ 'is-invalid': fvalupdate['lastInitial'].errors }"
+              class="form-control"
+            />
+            <div
+              *ngIf="fvalupdate['lastInitial'].errors && submitted"
+              class="invalid-feedback"
+            >
+              Last Initail is required.
+            </div>
+            <label for="phone">Phone</label>
+            <input
+              type="text"
+              name="phone"
+              id="phone"
+              formControlName="phone"
+              [ngClass]="{ 'is-invalid': fvalupdate['phone'].errors }"
+              class="form-control"
+            />
+            <div
+              *ngIf="fvalupdate['phone'].errors && submitted"
+              class="invalid-feedback"
+            >
+              Phone is required.
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            [disabled]="!AddForm.valid"
+            (click)="addSchedule()"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="DeleteModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            Are you sure you want to delete this waitlist?
+          </h5>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="CancelDelete()"
+            data-bs-dismiss="modal"
+          >
+            No
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="ConfirmDelete()"
+          >
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="modal fade"
+    id="SuccessModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            {{ successMessage }}
+          </h5>
+        </div>
+        <div align="center" style="padding: 5px">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            OK</button
+          >&nbsp;
+          <br />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Button to open the Add Schedule Modal -->
+  <div align="center">
+    <button
+      type="button"
+      class="btn-custom"
+      data-bs-toggle="modal"
+      data-bs-target="#AddScheduleModal"
+    >
+      Add Waitlist
+    </button>
+  </div>
+  <br />
+
+  <div align="center">
+    <div class="table-div mb-5 bg-white">
+      <table>
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Initial</th>
+            <th>Phone</th>
+            <th>SMS</th>
+            <th>Checked in</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let waitlist of schedule">
+            <td>{{ waitlist.firstName }}</td>
+            <td>{{ waitlist.lastInitial }}</td>
+            <td>{{ waitlist.phone }}</td>
+            <td>{{ waitlist.smsUpdates }}</td>
+            <td>{{ waitlist.checkedIn }}</td>
+            <td>
+              <div class="btn-group">
+                <button
+                  class="btn btn-danger"
+                  (click)="deleteQuotes(waitlist.id)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#DeleteModal"
+                >
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+                &nbsp;
+                <button
+                  type="button"
+                  class="btn btn-dark rounded"
+                  data-bs-toggle="modal"
+                  data-bs-target="#ViewModal"
+                  (click)="setUpdateData(waitlist)"
+                >
+                  <i class="fa fa-eye" aria-hidden="true"></i>
+                </button>
+                &nbsp;
+                <button
+                  class="btn btn-primary"
+                  (click)="setUpdateData(waitlist)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#UpdateModal"
+                >
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
