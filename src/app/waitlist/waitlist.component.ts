@@ -46,6 +46,7 @@ export class WaitlistComponent {
   selectedLimits: number[] = []; // Track slider values
   viewSchedule: any;
   selectedItem: any = null;
+  checkinId: any;
   constructor(
     private services: ServicesService,
     public router: Router,
@@ -189,14 +190,25 @@ export class WaitlistComponent {
     //   location.reload();
     //  }, 1000);
   }
-
+  ConfirmCheckin() {
+    this.services.checkInWaitlist(this.checkinId).then(() => {
+      this.getWaitlist();
+    });
+    this.checkinId = undefined;
+    $('#CheckinModal').modal('hide');
+    this.successMessage = 'Waitlist checked in successfully.';
+    $('#SuccessModal').modal('show');
+  }
+  CancelCheckin() {
+    this.checkinId = undefined;
+  }
   CancelDelete() {
     this.deleteId = undefined;
-    location.reload();
   }
   setUpdateData(item: any) {
     this.selectedItem = item;
     this.updateId = item.id;
+    this.checkinId = item.id;
     console.log(this.selectedItem);
     this.UpdateForm.patchValue(item);
   }

@@ -218,6 +218,42 @@
       </div>
     </div>
   </div>
+
+  <div
+    class="modal fade"
+    id="CheckinModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            Are you sure you want to check in this waitlist?
+          </h5>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="CancelCheckin()"
+            data-bs-dismiss="modal"
+          >
+            No
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="ConfirmCheckin()"
+          >
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div
     class="modal fade"
     id="SuccessModal"
@@ -294,7 +330,7 @@
                   type="button"
                   class="btn btn-dark rounded"
                   data-bs-toggle="modal"
-                  data-bs-target="#ViewModal"
+                  data-bs-target="#CheckinModal"
                   (click)="setUpdateData(waitlist)"
                 >
                   <i class="fa fa-eye" aria-hidden="true"></i>

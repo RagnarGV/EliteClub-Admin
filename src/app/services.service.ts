@@ -26,8 +26,8 @@ export interface Schedule {
   providedIn: 'root',
 })
 export class ServicesService {
-  private apiUrl = 'https://eliteclub-api.onrender.com/api';
-  //private apiUrl = 'http://localhost:3000/api';
+  //private apiUrl = 'https://eliteclub-api.onrender.com/api';
+  private apiUrl = 'http://localhost:3000/api';
   constructor() {}
   async register(data: any): Promise<any> {
     try {
@@ -49,7 +49,10 @@ export class ServicesService {
     }
   }
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
+    if (typeof window !== 'undefined') {
+      return !!window.localStorage.getItem('token');
+    }
+    return false;
   }
 
   logout(): void {
@@ -122,5 +125,8 @@ export class ServicesService {
   }
   async deleteWaitlist(id: string): Promise<void> {
     await axios.delete(`${this.apiUrl}/waitlist/${id}`);
+  }
+  async checkInWaitlist(id: string): Promise<void> {
+    await axios.put(`${this.apiUrl}/waitlist/checkin/${id}`);
   }
 }
