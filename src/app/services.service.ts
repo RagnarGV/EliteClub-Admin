@@ -26,8 +26,8 @@ export interface Schedule {
   providedIn: 'root',
 })
 export class ServicesService {
-  //private apiUrl = 'https://eliteclub-api.onrender.com/api';
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = 'https://eliteclub-api.onrender.com/api';
+  //private apiUrl = 'http://localhost:3000/api';
   constructor() {}
   async register(data: any): Promise<any> {
     try {
