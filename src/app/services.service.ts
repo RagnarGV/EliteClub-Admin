@@ -26,8 +26,8 @@ export interface Schedule {
   providedIn: 'root',
 })
 export class ServicesService {
-  private apiUrl = 'https://eliteclub-api.onrender.com/api';
-  //private apiUrl = 'http://localhost:3000/api';
+  //private apiUrl = 'https://eliteclub-api.onrender.com/api';
+  private apiUrl = 'http://localhost:3000/api';
   constructor() {}
   async register(data: any): Promise<any> {
     try {
@@ -58,56 +58,47 @@ export class ServicesService {
   logout(): void {
     localStorage.removeItem('token');
   }
-  async getSchedule(): Promise<Schedule[]> {
-    const response = await axios.get<Schedule[]>(this.apiUrl + '/schedule');
+  async getSchedule() {
+    const response = await axios.get(this.apiUrl + '/schedule');
     return response.data;
   }
 
-  async getGames(): Promise<Game[]> {
-    const response = await axios.get<Game[]>(`${this.apiUrl}/schedule/games`);
+  async getGames() {
+    const response = await axios.get(`${this.apiUrl}/schedule/games`);
     return response.data;
   }
 
-  async getScheduleById(id: string): Promise<Schedule> {
-    const response = await axios.get<Schedule>(`${this.apiUrl}/schedule/${id}`);
+  async getScheduleById(id: string) {
+    const response = await axios.get(`${this.apiUrl}/schedule/${id}`);
     return response.data;
   }
 
-  async updateSchedule(
-    id: string,
-    schedule: Partial<Schedule>
-  ): Promise<Schedule> {
-    const response = await axios.put<Schedule>(
-      `${this.apiUrl}/schedule/${id}`,
-      schedule
-    );
+  async updateSchedule(id: string, schedule: any) {
+    const response = await axios.put(`${this.apiUrl}/schedule/${id}`, schedule);
     return response.data;
   }
-  async addSchedule(schedule: Partial<Schedule>): Promise<Schedule> {
-    const response = await axios.post<Schedule>(
-      this.apiUrl + '/schedule',
-      schedule
-    );
+  async addSchedule(schedule: any) {
+    const response = await axios.post(this.apiUrl + '/schedule', schedule);
     return response.data;
   }
-  async deleteSchedule(id: string): Promise<void> {
+  async deleteSchedule(id: string) {
     await axios.delete(`${this.apiUrl}/schedule/${id}`);
   }
-  async addGalleryItem(data: FormData): Promise<Observable<any>> {
+  async addGalleryItem(data: FormData) {
     const response = await axios.post(this.apiUrl + '/gallery', data);
     return response.data;
   }
 
-  async getGallery(): Promise<GalleryItem[]> {
-    const response = await axios.get<GalleryItem[]>(this.apiUrl + '/gallery');
+  async getGallery() {
+    const response = await axios.get(this.apiUrl + '/gallery');
     return response.data;
   }
 
-  async deleteGalleryItem(id: string): Promise<void> {
+  async deleteGalleryItem(id: string) {
     await axios.delete(`${this.apiUrl}/gallery/${id}`);
   }
 
-  async updateGalleryItem(id: string, updatedData: any): Promise<void> {
+  async updateGalleryItem(id: string, updatedData: any) {
     await axios.put(`${this.apiUrl}/gallery/${id}`, updatedData);
   }
 
@@ -116,17 +107,17 @@ export class ServicesService {
     return response.data;
   }
 
-  async addToWaitlist(data: any): Promise<any> {
+  async addToWaitlist(data: any) {
     const response = await axios.post(`${this.apiUrl}/waitlist`, data);
     return response.data;
   }
-  async updateToWaitlist(id: string, updatedData: any): Promise<any> {
+  async updateToWaitlist(id: string, updatedData: any) {
     await axios.put(`${this.apiUrl}/waitlist/${id}`, updatedData);
   }
-  async deleteWaitlist(id: string): Promise<void> {
+  async deleteWaitlist(id: string) {
     await axios.delete(`${this.apiUrl}/waitlist/${id}`);
   }
-  async checkInWaitlist(id: string): Promise<void> {
+  async checkInWaitlist(id: string) {
     await axios.put(`${this.apiUrl}/waitlist/checkin/${id}`);
   }
 }
