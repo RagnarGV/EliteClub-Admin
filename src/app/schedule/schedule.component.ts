@@ -45,6 +45,7 @@ export class ScheduleComponent implements OnInit {
   selectedSchedule: any;
   selectedLimits: number[] = []; // Track slider values
   viewSchedule: any;
+  allGames: any[] = [];
   constructor(
     private services: ServicesService,
     public router: Router,
@@ -81,11 +82,12 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getQuotes();
+    this.getSchedule();
     this.getGames();
+    this.getAllGames();
   }
 
-  getQuotes() {
+  getSchedule() {
     this.services.getSchedule().then((data) => {
       this.schedule = data;
       console.log(this.schedule);
@@ -97,11 +99,17 @@ export class ScheduleComponent implements OnInit {
       console.log(this.scheduleGames);
     });
   }
+  getAllGames() {
+    this.services.getAllGames().then((data) => {
+      this.allGames = data;
+      console.log(this.allGames);
+    });
+  }
 
   addGame(): void {
     const gameGroup = this.fb.group({
       type: ['', Validators.required],
-      limit: [10, Validators.required], // Default limit
+      limit: ['', Validators.required], // Default limit
     });
     this.games.push(gameGroup);
   }
@@ -113,7 +121,7 @@ export class ScheduleComponent implements OnInit {
   addGameAdd(): void {
     const gameGroup = this.fb.group({
       type: ['', Validators.required],
-      limit: [10, Validators.required], // Default limit
+      limit: ['', Validators.required], // Default limit
     });
     this.addGames.push(gameGroup);
   }
@@ -138,7 +146,7 @@ export class ScheduleComponent implements OnInit {
 
     this.services.addSchedule(newSchedule).then(
       (data) => {
-        this.getQuotes();
+        this.getSchedule();
         console.log('Schedule added successfully:', data);
         this.submitted = false;
         this.AddForm.reset();
@@ -175,7 +183,7 @@ export class ScheduleComponent implements OnInit {
 
     this.services.updateSchedule(this.updateId, updatedData).then(
       (data) => {
-        this.getQuotes();
+        this.getSchedule();
         console.log('Updated Schedule:', data);
         $('#UpdateModal').modal('hide');
         this.successMessage = 'Schedule updated successfully.';
@@ -209,7 +217,7 @@ export class ScheduleComponent implements OnInit {
         this.schedule = this.schedule.filter(
           (schedules) => schedules.id !== this.deleteId
         );
-        this.getQuotes();
+        this.getSchedule();
         console.log(`Deleted Schedule with ID ${this.deleteId}`);
       },
       (error) => {

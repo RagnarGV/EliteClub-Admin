@@ -1,0 +1,47 @@
+// Inherit common styles from waitlist component
+@import "../waitlist/waitlist.component.scss";
+
+// Additional game-specific styles
+.complexity-rating {
+  display: flex;
+  gap: 4px;
+
+  .star {
+    color: goldenrod;
+  }
+}
+
+.game-description {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Override some table styles for games
+td {
+  vertical-align: middle;
+}
+
+// Custom form styling
+textarea.form-control {
+  min-height: 100px;
+  resize: vertical;
+}
+
+input[type="number"].form-control {
+  width: 100px;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .game-description {
+    max-width: 150px;
+  }
+
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}

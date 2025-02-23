@@ -1,0 +1,282 @@
+<div class="content container">
+  <div align="center">
+    <h1>Games</h1>
+  </div>
+
+  <!-- Add Game Modal -->
+  <div
+    class="modal fade"
+    id="AddGameModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="AddModalTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="AddModalTitle">Add Game</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="gameForm" role="form">
+            <div class="mb-3">
+              <label for="type">Type</label>
+              <input
+                type="text"
+                id="type"
+                formControlName="type"
+                [ngClass]="{ 'is-invalid': fval['type'].errors && submitted }"
+                class="form-control"
+              />
+              <div
+                *ngIf="fval['type'].errors && submitted"
+                class="invalid-feedback"
+              >
+                Type is required.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="limit">Limit</label>
+              <input
+                type="text"
+                id="limit"
+                formControlName="limit"
+                [ngClass]="{ 'is-invalid': fval['limit'].errors && submitted }"
+                class="form-control"
+              />
+              <div
+                *ngIf="fval['limit'].errors && submitted"
+                class="invalid-feedback"
+              >
+                Limit is required.
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            [disabled]="!gameForm.valid"
+            (click)="addGame()"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Modal -->
+  <div
+    class="modal fade"
+    id="UpdateModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="UpdateModalTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="UpdateModalTitle">Update Game</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="updateForm">
+            <div class="mb-3">
+              <label for="updateType">Type</label>
+              <input
+                type="text"
+                id="updateType"
+                formControlName="type"
+                [ngClass]="{
+                  'is-invalid': fvalUpdate['type'].errors && submitted
+                }"
+                class="form-control"
+              />
+              <div
+                *ngIf="fvalUpdate['type'].errors && submitted"
+                class="invalid-feedback"
+              >
+                Type is required.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="updateLimit">Limit</label>
+              <input
+                type="text"
+                id="updateLimit"
+                formControlName="limit"
+                [ngClass]="{
+                  'is-invalid': fvalUpdate['limit'].errors && submitted
+                }"
+                class="form-control"
+              />
+              <div
+                *ngIf="fvalUpdate['limit'].errors && submitted"
+                class="invalid-feedback"
+              >
+                Limit is required.
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            [disabled]="!updateForm.valid"
+            (click)="updateGame()"
+          >
+            Update
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div
+    class="modal fade"
+    id="DeleteModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="DeleteModalTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete Game</h5>
+        </div>
+        <div class="modal-body">Are you sure you want to delete this game?</div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="cancelDelete()"
+            data-bs-dismiss="modal"
+          >
+            No
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="confirmDelete()"
+          >
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div
+    class="modal fade"
+    id="SuccessModal"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ successMessage }}</h5>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Game Button -->
+  <div align="center">
+    <button
+      type="button"
+      class="btn-custom"
+      data-bs-toggle="modal"
+      data-bs-target="#AddGameModal"
+    >
+      Add Game
+    </button>
+  </div>
+  <br />
+
+  <!-- Games Table -->
+  <div align="center">
+    <div class="table-div mb-5 bg-white">
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Limit</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let game of games">
+            <td>{{ game.type }}</td>
+            <td>{{ game.limit }}</td>
+            <td>
+              <div class="btn-group">
+                <button
+                  class="btn btn-primary"
+                  (click)="setUpdateData(game)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#UpdateModal"
+                >
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                </button>
+                &nbsp;
+                <button
+                  class="btn btn-danger"
+                  (click)="deleteGame(game.id)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#DeleteModal"
+                >
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

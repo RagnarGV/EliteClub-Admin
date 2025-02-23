@@ -42,7 +42,6 @@ export class LoginComponent {
 
     this.authService.login(this.loginForm.value).then(
       (response) => {
-        localStorage.setItem('token', response.token);
         alert('Login successful!');
         this.router.navigate(['/home']).then(() => {
           window.location.reload();

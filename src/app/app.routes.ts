@@ -6,7 +6,7 @@ import { GalleryComponent } from './gallery/gallery.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './auth.guard';
-
+import { GameComponent } from './game/game.component';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -17,6 +17,7 @@ export const routes: Routes = [
     component: WaitlistComponent,
     canActivate: [AuthGuard],
   },
+  { path: 'game', component: GameComponent, canActivate: [AuthGuard] },
   { path: 'gallery', component: GalleryComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];

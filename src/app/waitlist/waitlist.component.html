@@ -1,4 +1,4 @@
-<div>
+<div class="content container">
   <div align="center">
     <h1>Waitlist</h1>
   </div>
@@ -318,23 +318,24 @@
             <td>
               <div class="btn-group">
                 <button
-                  class="btn btn-danger"
+                  type="button"
+                  class="btn btn-dark"
+                  data-bs-toggle="modal"
+                  data-bs-target="#CheckinModal"
+                  (click)="setUpdateData(waitlist)"
+                >
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                </button>
+                &nbsp;
+                <button
+                  class="btn btn-danger rounded"
                   (click)="deleteQuotes(waitlist.id)"
                   data-bs-toggle="modal"
                   data-bs-target="#DeleteModal"
                 >
                   <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
-                &nbsp;
-                <button
-                  type="button"
-                  class="btn btn-dark rounded"
-                  data-bs-toggle="modal"
-                  data-bs-target="#CheckinModal"
-                  (click)="setUpdateData(waitlist)"
-                >
-                  <i class="fa fa-eye" aria-hidden="true"></i>
-                </button>
+
                 &nbsp;
                 <button
                   class="btn btn-primary"

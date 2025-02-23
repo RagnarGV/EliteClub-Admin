@@ -1,4 +1,4 @@
-<div>
+<div class="content container">
   <div align="center">
     <h1>Schedule</h1>
   </div>
@@ -281,8 +281,7 @@
                 class="mb-3"
               >
                 <label for="type-{{ i }}">Type</label>
-                <input
-                  type="text"
+                <select
                   id="type-{{ i }}"
                   formControlName="type"
                   class="form-control"
@@ -290,7 +289,12 @@
                     'is-invalid':
                       getGameFormGroup(i).controls['type'].errors && submitted
                   }"
-                />
+                >
+                  <option value="">Select a game</option>
+                  <option *ngFor="let game of allGames" [value]="game.type">
+                    {{ game.type }}
+                  </option>
+                </select>
                 <div
                   *ngIf="
                     getGameFormGroup(i).controls['type'].errors && submitted

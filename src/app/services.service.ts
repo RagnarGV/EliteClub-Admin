@@ -42,6 +42,7 @@ export class ServicesService {
       const response = await axios.post(this.apiUrl + '/login', data);
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
+        localStorage.setItem('name', response.data.user.name);
       }
       return response.data;
     } catch (error: any) {
@@ -119,5 +120,24 @@ export class ServicesService {
   }
   async checkInWaitlist(id: string) {
     await axios.put(`${this.apiUrl}/waitlist/checkin/${id}`);
+  }
+
+  async getAllGames() {
+    const response = await axios.get(`${this.apiUrl}/game`);
+    return response.data;
+  }
+
+  async addGame(game: any) {
+    const response = await axios.post(`${this.apiUrl}/game`, game);
+    return response.data;
+  }
+
+  async updateGame(id: string, game: any) {
+    const response = await axios.put(`${this.apiUrl}/game/${id}`, game);
+    return response.data;
+  }
+
+  async deleteGame(id: string) {
+    await axios.delete(`${this.apiUrl}/game/${id}`);
   }
 }
