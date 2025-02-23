@@ -154,22 +154,53 @@
                 [formGroupName]="i"
                 class="mb-3 border p-3"
               >
-                <label for="type">Type</label>
-                <input
-                  type="text"
-                  name="type"
-                  id="type"
+                <label for="type-{{ i }}">Type</label>
+                <select
+                  id="type-{{ i }}"
                   formControlName="type"
                   class="form-control"
-                />
-                <label for="limit">Limit</label>
+                  [ngClass]="{
+                    'is-invalid':
+                      getGameUpdateFormGroup(i).controls['type'].errors &&
+                      submitted
+                  }"
+                >
+                  <option value="">Select a game</option>
+                  <option *ngFor="let game of allGames" [value]="game.type">
+                    {{ game.type }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    getGameUpdateFormGroup(i).controls['type'].errors &&
+                    submitted
+                  "
+                  class="invalid-feedback"
+                >
+                  Type is required.
+                </div>
+                <label for="limit-{{ i }}">Limit</label>
                 <input
                   type="text"
-                  name="limit"
-                  id="limit"
+                  id="limit-{{ i }}"
                   formControlName="limit"
                   class="form-control"
+                  [ngClass]="{
+                    'is-invalid':
+                      getGameUpdateFormGroup(i).controls['limit'].errors &&
+                      submitted
+                  }"
                 />
+                <div
+                  *ngIf="
+                    getGameUpdateFormGroup(i).controls['limit'].errors &&
+                    submitted
+                  "
+                  class="invalid-feedback"
+                >
+                  Limit is required.
+                </div>
+
                 <button
                   type="button"
                   class="btn btn-danger mt-2"

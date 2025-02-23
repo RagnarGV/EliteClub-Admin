@@ -74,6 +74,9 @@ export class ScheduleComponent implements OnInit {
   getGameFormGroup(index: number): FormGroup {
     return this.addGames.at(index) as FormGroup;
   }
+  getGameUpdateFormGroup(index: number): FormGroup {
+    return this.games.at(index) as FormGroup;
+  }
   get fvaladd() {
     return this.AddForm.controls;
   }
