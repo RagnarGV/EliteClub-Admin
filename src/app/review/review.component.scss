@@ -1,0 +1,35 @@
+@import "../waitlist/waitlist.component.scss";
+
+.rating-stars {
+  color: #ffd700;
+  font-size: 1.2em;
+  
+  .fa-star-o {
+    color: #ccc;
+  }
+}
+
+.review-comment {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+textarea.form-control {
+  min-height: 100px;
+  resize: vertical;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .review-comment {
+    max-width: 150px;
+  }
+
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
