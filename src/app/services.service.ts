@@ -26,8 +26,8 @@ export interface Schedule {
   providedIn: 'root',
 })
 export class ServicesService {
-  private apiUrl = 'https://eliteclub-api.onrender.com/api';
-  //private apiUrl = 'http://localhost:3000/api';
+  //private apiUrl = 'https://eliteclub-api.onrender.com/api';
+  private apiUrl = 'http://localhost:3000/api';
   constructor() {}
   async register(data: any): Promise<any> {
     try {
@@ -139,5 +139,26 @@ export class ServicesService {
 
   async deleteGame(id: string) {
     await axios.delete(`${this.apiUrl}/game/${id}`);
+  }
+
+  // Review CRUD operations
+  async getAllReviews() {
+    const response = await axios.get(`${this.apiUrl}/reviews`);
+    return response.data;
+  }
+
+  async addReview(review: any) {
+    const response = await axios.post(`${this.apiUrl}/reviews`, review);
+    return response.data;
+  }
+
+  async updateReview(id: string, review: any) {
+    const response = await axios.put(`${this.apiUrl}/reviews/${id}`, review);
+    return response.data;
+  }
+
+  async deleteReview(id: string) {
+    const response = await axios.delete(`${this.apiUrl}/reviews/${id}`);
+    return response.data;
   }
 }
