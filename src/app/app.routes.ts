@@ -8,6 +8,7 @@ import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './auth.guard';
 import { GameComponent } from './game/game.component';
 import { ReviewComponent } from './review/review.component';
+import { SpecialEventsComponent } from './special-events/special-events.component';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -21,5 +22,10 @@ export const routes: Routes = [
   { path: 'game', component: GameComponent, canActivate: [AuthGuard] },
   { path: 'gallery', component: GalleryComponent, canActivate: [AuthGuard] },
   { path: 'review', component: ReviewComponent, canActivate: [AuthGuard] },
+  {
+    path: 'special-events',
+    component: SpecialEventsComponent,
+    canActivate: [AuthGuard],
+  },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];

@@ -27,6 +27,7 @@ export interface Schedule {
 })
 export class ServicesService {
   private apiUrl = 'https://eliteclub-api.onrender.com/api';
+  private newApiUrl = 'https://clubelite.ca/apis';
   //private apiUrl = 'http://localhost:3000/api';
   constructor() {}
   async register(data: any): Promise<any> {
@@ -60,105 +61,163 @@ export class ServicesService {
     localStorage.removeItem('token');
   }
   async getSchedule() {
-    const response = await axios.get(this.apiUrl + '/schedule');
+    const response = await axios.get(this.newApiUrl + '/schedule');
     return response.data;
   }
 
   async getGames() {
-    const response = await axios.get(`${this.apiUrl}/schedule/games`);
+    const response = await axios.get(`${this.newApiUrl}/schedule/games`);
     return response.data;
   }
 
   async getScheduleById(id: string) {
-    const response = await axios.get(`${this.apiUrl}/schedule/${id}`);
+    const response = await axios.get(`${this.newApiUrl}/schedule/${id}`);
     return response.data;
   }
 
   async updateSchedule(id: string, schedule: any) {
-    const response = await axios.put(`${this.apiUrl}/schedule/${id}`, schedule);
+    const response = await axios.post(
+      `${this.newApiUrl}/schedule/update/${id}`,
+      schedule
+    );
     return response.data;
   }
   async addSchedule(schedule: any) {
-    const response = await axios.post(this.apiUrl + '/schedule', schedule);
+    const response = await axios.post(this.newApiUrl + '/schedule', schedule);
     return response.data;
   }
   async deleteSchedule(id: string) {
-    await axios.delete(`${this.apiUrl}/schedule/${id}`);
+    await axios.post(`${this.newApiUrl}/schedule/delete/${id}`);
   }
   async addGalleryItem(data: FormData) {
-    const response = await axios.post(this.apiUrl + '/gallery', data);
+    const response = await axios.post(this.newApiUrl + '/gallery', data);
     return response.data;
   }
 
   async getGallery() {
-    const response = await axios.get(this.apiUrl + '/gallery');
+    const response = await axios.get(this.newApiUrl + '/gallery');
     return response.data;
   }
 
   async deleteGalleryItem(id: string) {
-    await axios.delete(`${this.apiUrl}/gallery/${id}`);
+    await axios.post(`${this.newApiUrl}/gallery/delete/${id}`);
   }
 
   async updateGalleryItem(id: string, updatedData: any) {
-    await axios.put(`${this.apiUrl}/gallery/${id}`, updatedData);
+    await axios.post(`${this.newApiUrl}/gallery/update/${id}`, updatedData);
   }
 
   async getWaitlist() {
-    const response = await axios.get(this.apiUrl + '/waitlist');
+    const response = await axios.get(this.newApiUrl + '/waitlist');
     return response.data;
   }
 
   async addToWaitlist(data: any) {
-    const response = await axios.post(`${this.apiUrl}/waitlist`, data);
+    const response = await axios.post(this.newApiUrl + '/waitlist', data);
     return response.data;
   }
   async updateToWaitlist(id: string, updatedData: any) {
-    await axios.put(`${this.apiUrl}/waitlist/${id}`, updatedData);
+    await axios.post(`${this.newApiUrl}/waitlist/update/${id}`, updatedData);
   }
   async deleteWaitlist(id: string) {
-    await axios.delete(`${this.apiUrl}/waitlist/${id}`);
+    await axios.post(`${this.newApiUrl}/waitlist/delete/${id}`);
   }
   async checkInWaitlist(id: string) {
-    await axios.put(`${this.apiUrl}/waitlist/checkin/${id}`);
+    await axios.post(`${this.newApiUrl}/waitlist/checkin/${id}`);
   }
 
   async getAllGames() {
-    const response = await axios.get(`${this.apiUrl}/game`);
+    const response = await axios.get(`${this.newApiUrl}/game`);
     return response.data;
   }
 
   async addGame(game: any) {
-    const response = await axios.post(`${this.apiUrl}/game`, game);
+    const response = await axios.post(`${this.newApiUrl}/game`, game);
     return response.data;
   }
 
   async updateGame(id: string, game: any) {
-    const response = await axios.put(`${this.apiUrl}/game/${id}`, game);
+    const response = await axios.post(
+      `${this.newApiUrl}/game/update/${id}`,
+      game
+    );
     return response.data;
   }
 
   async deleteGame(id: string) {
-    await axios.delete(`${this.apiUrl}/game/${id}`);
+    await axios.post(`${this.newApiUrl}/game/delete/${id}`);
   }
 
   // Review CRUD operations
   async getAllReviews() {
-    const response = await axios.get(`${this.apiUrl}/reviews`);
+    const response = await axios.get(`${this.newApiUrl}/reviews`);
     return response.data;
   }
 
   async addReview(review: any) {
-    const response = await axios.post(`${this.apiUrl}/reviews`, review);
+    const response = await axios.post(`${this.newApiUrl}/reviews`, review);
     return response.data;
   }
 
   async updateReview(id: string, review: any) {
-    const response = await axios.put(`${this.apiUrl}/reviews/${id}`, review);
+    const response = await axios.post(
+      `${this.newApiUrl}/reviews/update/${id}`,
+      review
+    );
     return response.data;
   }
 
   async deleteReview(id: string) {
-    const response = await axios.delete(`${this.apiUrl}/reviews/${id}`);
-    return response.data;
+    await axios.post(`${this.newApiUrl}/reviews/delete/${id}`);
+  }
+
+  //Endpoints for the special events
+  async getAllEvents(): Promise<any> {
+    try {
+      const response = await axios.get(`${this.newApiUrl}/special-events`);
+
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching events:', error);
+      throw error;
+    }
+  }
+
+  // Add new event
+  async addEvent(eventData: any): Promise<any> {
+    try {
+      const response = await axios.post(
+        `${this.newApiUrl}/special-events`,
+        eventData
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error adding event:', error);
+      throw error;
+    }
+  }
+
+  // Update event
+  async updateEvent(id: string, eventData: any): Promise<any> {
+    try {
+      const response = await axios.post(
+        `${this.newApiUrl}/special-events/update/${id}`,
+        eventData
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error updating event:', error);
+      throw error;
+    }
+  }
+
+  // Delete event
+  async deleteEvent(id: string): Promise<any> {
+    try {
+      await axios.post(`${this.newApiUrl}/special-events/delete/${id}`);
+    } catch (error) {
+      console.error('Error deleting event:', error);
+      throw error;
+    }
   }
 }

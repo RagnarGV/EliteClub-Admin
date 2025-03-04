@@ -46,6 +46,7 @@ export class ScheduleComponent implements OnInit {
   selectedLimits: number[] = []; // Track slider values
   viewSchedule: any;
   allGames: any[] = [];
+  selectedItem: any;
   constructor(
     private services: ServicesService,
     public router: Router,
@@ -86,7 +87,7 @@ export class ScheduleComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSchedule();
-    this.getGames();
+    // this.getGames();
     this.getAllGames();
   }
 
@@ -96,19 +97,36 @@ export class ScheduleComponent implements OnInit {
       console.log(this.schedule);
     });
   }
-  getGames() {
-    this.services.getGames().then((data) => {
-      this.scheduleGames = data;
-      console.log(this.scheduleGames);
-    });
-  }
+  // getGames() {
+  //   this.services.getGames().then((data) => {
+  //     this.scheduleGames = data;
+  //     console.log(this.scheduleGames);
+  //   });
+  // }
   getAllGames() {
     this.services.getAllGames().then((data) => {
       this.allGames = data;
       console.log(this.allGames);
     });
   }
-
+  setUpdateData(item: any) {
+    this.selectedItem = item;
+    this.updateId = item.id;
+    console.log(this.selectedItem);
+    this.UpdateForm.patchValue(item);
+    const gamesArray = this.UpdateForm.get('games') as FormArray;
+    gamesArray.clear(); // Clear existing entries
+    item.games.forEach((game: any) => {
+      const gameGroup = this.fb.group({
+        type: [game.type, Validators.required],
+        limit: [game.limit, Validators.required],
+      });
+      gamesArray.push(gameGroup);
+    });
+  }
+  setViewData(item: any) {
+    this.viewSchedule = item;
+  }
   addGame(): void {
     const gameGroup = this.fb.group({
       type: ['', Validators.required],

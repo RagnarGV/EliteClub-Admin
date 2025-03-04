@@ -1,0 +1,393 @@
+<div class="content container">
+  <div align="center">
+    <h1>Special Events</h1>
+  </div>
+
+  <!-- Add Event Modal -->
+  <div
+    class="modal fade"
+    id="AddEventModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="AddModalTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="AddModalTitle">Add Special Event</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="eventForm" role="form">
+            <div class="mb-3">
+              <label for="event_name">Event Name</label>
+              <input
+                type="text"
+                id="event_name"
+                formControlName="event_name"
+                [ngClass]="{
+                  'is-invalid': fval['event_name'].errors && submitted
+                }"
+                class="form-control"
+              />
+              <div
+                *ngIf="fval['event_name'].errors && submitted"
+                class="invalid-feedback"
+              >
+                Event name is required.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="event_description">Description</label>
+              <textarea
+                id="event_description"
+                formControlName="event_description"
+                [ngClass]="{
+                  'is-invalid': fval['event_description'].errors && submitted
+                }"
+                class="form-control"
+              ></textarea>
+              <div
+                *ngIf="fval['event_description'].errors && submitted"
+                class="invalid-feedback"
+              >
+                Description is required.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="event_image">Event Image</label>
+              <div class="custom-file">
+                <input
+                  type="file"
+                  class="form-control"
+                  id="event_image"
+                  (change)="onFileSelected($event)"
+                  accept="image/*"
+                />
+              </div>
+              <div *ngIf="selectedFile" class="mt-2">
+                <img [src]="imagePreview" class="preview-image" alt="Preview" />
+              </div>
+              <div
+                *ngIf="fval['event_image'].errors && submitted"
+                class="invalid-feedback"
+              >
+                Image is required.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="is_live">Status</label>
+              <select
+                id="is_live"
+                formControlName="is_live"
+                class="form-control"
+              >
+                <option [ngValue]="true">Live</option>
+                <option [ngValue]="false">Not Live</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            [disabled]="!eventForm.valid"
+            (click)="addEvent()"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Modal -->
+  <div
+    class="modal fade"
+    id="UpdateModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="UpdateModalTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="UpdateModalTitle">Update Event</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="updateForm">
+            <div class="mb-3">
+              <label for="updateEventName">Event Name</label>
+              <input
+                type="text"
+                id="updateEventName"
+                formControlName="event_name"
+                [ngClass]="{
+                  'is-invalid': fvalUpdate['event_name'].errors && submitted
+                }"
+                class="form-control"
+              />
+              <div
+                *ngIf="fvalUpdate['event_name'].errors && submitted"
+                class="invalid-feedback"
+              >
+                Event name is required.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="updateDescription">Description</label>
+              <textarea
+                id="updateDescription"
+                formControlName="event_description"
+                [ngClass]="{
+                  'is-invalid':
+                    fvalUpdate['event_description'].errors && submitted
+                }"
+                class="form-control"
+              ></textarea>
+              <div
+                *ngIf="fvalUpdate['event_description'].errors && submitted"
+                class="invalid-feedback"
+              >
+                Description is required.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="updateImage">Event Image</label>
+              <div class="custom-file">
+                <input
+                  type="file"
+                  class="form-control"
+                  id="updateImage"
+                  (change)="onUpdateFileSelected($event)"
+                  accept="image/*"
+                />
+              </div>
+              <div *ngIf="updateImagePreview" class="mt-2">
+                <img
+                  [src]="updateImagePreview"
+                  class="preview-image"
+                  alt="Preview"
+                />
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="updateIsLive">Status</label>
+              <select
+                id="updateIsLive"
+                formControlName="is_live"
+                class="form-control"
+              >
+                <option [ngValue]="true">Live</option>
+                <option [ngValue]="false">Not Live</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            [disabled]="!updateForm.valid"
+            (click)="updateEvent()"
+          >
+            Update
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div
+    class="modal fade"
+    id="DeleteModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="DeleteModalTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete Event</h5>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this event?
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="cancelDelete()"
+            data-bs-dismiss="modal"
+          >
+            No
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="confirmDelete()"
+          >
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div
+    class="modal fade"
+    id="SuccessModal"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ successMessage }}</h5>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Preview Modal -->
+  <div
+    class="modal fade"
+    id="ImagePreviewModal"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body text-center">
+          <img
+            [src]="previewModalImage"
+            class="img-fluid"
+            alt="Full size image"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Event Button -->
+  <div align="center">
+    <button
+      type="button"
+      class="btn-custom"
+      data-bs-toggle="modal"
+      data-bs-target="#AddEventModal"
+    >
+      Add Event
+    </button>
+  </div>
+  <br />
+
+  <!-- Events Table -->
+  <div align="center">
+    <div class="table-div mb-5 bg-white">
+      <table>
+        <thead>
+          <tr>
+            <th>Event Name</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let event of events">
+            <td>{{ event.event_name }}</td>
+            <td class="event-description">{{ event.event_description }}</td>
+            <td>
+              <img
+                [src]="event.image"
+                alt="Event image"
+                class="event-thumbnail"
+                (click)="openImageModal(event.image)"
+              />
+            </td>
+            <td>{{ event.is_live ? "Live" : "Not Live" }}</td>
+            <td>
+              <div class="btn-group">
+                <button
+                  class="btn btn-primary"
+                  (click)="setUpdateData(event)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#UpdateModal"
+                >
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                </button>
+                &nbsp;
+                <button
+                  class="btn btn-danger"
+                  (click)="deleteEvent(event.id)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#DeleteModal"
+                >
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

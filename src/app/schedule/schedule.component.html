@@ -503,14 +503,14 @@
                   class="btn btn-dark rounded"
                   data-bs-toggle="modal"
                   data-bs-target="#ViewModal"
-                  (click)="fetchScheduleById(quotes.id)"
+                  (click)="setViewData(quotes)"
                 >
                   <i class="fa fa-eye" aria-hidden="true"></i>
                 </button>
                 &nbsp;
                 <button
                   class="btn btn-primary"
-                  (click)="fetchScheduleById(quotes.id)"
+                  (click)="setUpdateData(quotes)"
                   data-bs-toggle="modal"
                   data-bs-target="#UpdateModal"
                 >
