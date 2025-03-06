@@ -1,25 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  ReactiveFormsModule,
-  FormArray,
-} from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ServicesService, Game } from '../services.service';
 import { Observable } from 'rxjs';
-import { ServicesService, Schedule, Game } from '../services.service';
-import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 declare var $: any;
 @Component({
-  selector: 'app-waitlist',
+  selector: 'app-toc',
   standalone: true,
   imports: [CommonModule, HttpClientModule, ReactiveFormsModule],
-  templateUrl: './waitlist.component.html',
-  styleUrl: './waitlist.component.scss',
+  templateUrl: './toc.component.html',
+  styleUrl: './toc.component.scss',
 })
-export class WaitlistComponent {
+export class TocComponent {
   allQuotes: any;
   resultdata: any;
   file: any;
@@ -41,12 +36,15 @@ export class WaitlistComponent {
   emotion: any;
   successMessage: any;
   schedule: any[] = [];
-  scheduleGames: Game[] = [];
+  scheduleGames: any;
   selectedSchedule: any;
   selectedLimits: number[] = []; // Track slider values
   viewSchedule: any;
   selectedItem: any = null;
   checkinId: any;
+  TocSettingsForm: FormGroup;
+  tocSettings: any;
+  tocSettingId: any;
   constructor(
     private services: ServicesService,
     public router: Router,
@@ -57,6 +55,7 @@ export class WaitlistComponent {
       firstName: ['', Validators.required],
       lastInitial: ['', Validators.required],
       phone: ['', Validators.required],
+      gameType: ['', Validators.required],
       smsUpdates: [Boolean, false],
       checkedIn: [Boolean, false],
     });
@@ -64,58 +63,84 @@ export class WaitlistComponent {
       firstName: ['', Validators.required],
       lastInitial: ['', Validators.required],
       phone: ['', Validators.required],
+      gameType: ['', Validators.required],
       smsUpdates: [Boolean, false],
       checkedIn: [Boolean, false],
+    });
+    this.TocSettingsForm = this.fb.group({
+      gameType: ['', Validators.required],
+      is_live: [Boolean, false],
+      buy_in: ['', Validators.required],
+      seats: ['', Validators.required],
     });
   }
   get fvaladd() {
     return this.AddForm.controls;
+  }
+  get fvaltoc() {
+    return this.TocSettingsForm.controls;
   }
   get fvalupdate() {
     return this.UpdateForm.controls;
   }
 
   ngOnInit(): void {
-    this.getWaitlist();
+    this.getToc();
+    this.getGames();
+    this.getTocSettings();
   }
 
-  getWaitlist() {
-    this.services.getWaitlist().then((data) => {
+  getTocSettings() {
+    this.services.getTocSettings().then((data) => {
+      this.tocSettings = data;
+      this.tocSettingId = this.tocSettings[0].id;
+      this.TocSettingsForm.patchValue(this.tocSettings[0]);
+    });
+  }
+
+  getToc() {
+    this.services.getToc().then((data) => {
       this.schedule = data;
       console.log(this.schedule);
     });
   }
+  getGames() {
+    this.services.getAllGames().then((data) => {
+      // Get today's date
+      this.scheduleGames = data;
+    });
+  }
 
-  addSchedule(): void {
+  addToc(): void {
     this.submitted = true;
 
     if (this.AddForm.invalid) {
       return;
     }
 
-    const newSchedule = {
+    const newToc = {
       firstName: this.AddForm.controls['firstName'].value,
       lastInitial: this.AddForm.controls['lastInitial'].value,
       phone: this.AddForm.controls['phone'].value,
+      gameType: this.AddForm.controls['gameType'].value,
       smsUpdates: this.AddForm.controls['smsUpdates'].value,
       checkedIn: this.AddForm.controls['checkedIn'].value,
     };
 
-    this.services.addToWaitlist(newSchedule).then(
+    this.services.addToToc(newToc).then(
       (data) => {
-        this.getWaitlist();
+        this.getToc();
 
         this.submitted = false;
         this.AddForm.reset();
-
-        $('#AddScheduleModal').modal('hide'); // Close modal
+        $('#AddTocModal').modal('hide');
         if (data != undefined) {
-          this.successMessage = 'Waitlist added successfully.';
+          this.successMessage = 'Toc added successfully.';
           $('#SuccessModal').modal('show');
         }
       },
       (error) => {
-        console.error('Error adding Waitlist:', error);
+        console.error('Error adding Toc:', error);
       }
     );
   }
@@ -126,7 +151,7 @@ export class WaitlistComponent {
     this.selectedLimits = [];
     this.submitted = false;
   }
-  updateSchedule(): void {
+  updateToc(): void {
     this.submitted = true;
 
     if (this.UpdateForm.invalid) {
@@ -137,69 +162,93 @@ export class WaitlistComponent {
       firstName: this.UpdateForm.controls['firstName'].value,
       lastInitial: this.UpdateForm.controls['lastInitial'].value,
       phone: this.UpdateForm.controls['phone'].value,
+      gameType: this.UpdateForm.controls['gameType'].value,
       smsUpdates: this.UpdateForm.controls['smsUpdates'].value,
       checkedIn: this.UpdateForm.controls['checkedIn'].value,
     };
 
-    this.services.updateToWaitlist(this.updateId, updatedData).then(
+    this.services.updateToToc(this.updateId, updatedData).then(
       (data) => {
-        this.getWaitlist();
+        this.getToc();
+        console.log('Updated Toc:', data);
         $('#UpdateModal').modal('hide');
-        if (data != undefined) {
-          this.successMessage = 'Schedule updated successfully.';
-          $('#SuccessModal').modal('show');
-        }
+        this.successMessage = 'Toc updated successfully.';
+        $('#SuccessModal').modal('show');
       },
       (error) => {
-        console.error('Error updating schedule:', error);
+        console.error('Error updating Toc:', error);
       }
     );
   }
-  deleteQuotes(id: any) {
+
+  updateTocSettings() {
+    this.submitted = true;
+
+    if (this.TocSettingsForm.invalid) {
+      return;
+    }
+
+    const updatedData = this.TocSettingsForm.value;
+
+    this.services.updateTocSettings(this.tocSettingId, updatedData).then(
+      (data) => {
+        this.TocSettingsForm.reset;
+        this.getTocSettings();
+
+        $('#TocSettingsModal').modal('hide');
+        this.successMessage = 'Toc settings updated successfully.';
+        $('#SuccessModal').modal('show');
+      },
+      (error) => {
+        console.error('Error updating Toc:', error);
+      }
+    );
+  }
+  deleteToc(id: any) {
     this.deleteId = id;
     console.log(this.deleteId);
   }
-  removeSchedule(id: string): void {
-    this.services.deleteWaitlist(id).then(
+  removeToc(id: string): void {
+    this.services.deleteToc(id).then(
       () => {
         this.schedule = this.schedule.filter(
           (schedules) => schedules.id !== id
         );
-        console.log(`Deleted waitlist with ID ${id}`);
+        console.log(`Deleted Toc with ID ${id}`);
       },
       (error) => {
-        console.error('Error deleting waitlist:', error);
+        console.error('Error deleting Toc:', error);
       }
     );
   }
   ConfirmDelete() {
-    this.services.deleteWaitlist(this.deleteId).then(
+    this.services.deleteToc(this.deleteId).then(
       () => {
         this.schedule = this.schedule.filter(
           (schedules) => schedules.id !== this.deleteId
         );
-        this.getWaitlist();
-        console.log(`Deleted waitlist with ID ${this.deleteId}`);
+        this.getToc();
+        console.log(`Deleted Toc with ID ${this.deleteId}`);
       },
       (error) => {
-        console.error('Error deleting waitlist:', error);
+        console.error('Error deleting Toc:', error);
       }
     );
     this.deleteId = undefined;
     $('#DeleteModal').modal('hide');
-    this.successMessage = 'waitlist deleted successfully.';
+    this.successMessage = 'Toc deleted successfully.';
     $('#SuccessModal').modal('show');
     // this.id = setInterval(() => {
     //   location.reload();
     //  }, 1000);
   }
   ConfirmCheckin() {
-    this.services.checkInWaitlist(this.checkinId).then(() => {
-      this.getWaitlist();
+    this.services.checkInToc(this.checkinId).then(() => {
+      this.getToc();
     });
     this.checkinId = undefined;
     $('#CheckinModal').modal('hide');
-    this.successMessage = 'Waitlist checked in successfully.';
+    this.successMessage = 'Toc checked in successfully.';
     $('#SuccessModal').modal('show');
   }
   CancelCheckin() {

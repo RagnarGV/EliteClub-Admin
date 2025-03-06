@@ -113,17 +113,85 @@ export class ServicesService {
   }
 
   async addToWaitlist(data: any) {
-    const response = await axios.post(this.newApiUrl + '/waitlist', data);
-    return response.data;
+    try {
+      const response = await axios.post(`${this.newApiUrl}/waitlist`, data);
+      return response.data;
+    } catch (error: any) {
+      if (error.status === 400) {
+        alert('Phone number already exists');
+      }
+    }
   }
   async updateToWaitlist(id: string, updatedData: any) {
-    await axios.post(`${this.newApiUrl}/waitlist/update/${id}`, updatedData);
+    try {
+      const response = await axios.post(
+        `${this.newApiUrl}/waitlist/update/${id}`,
+        updatedData
+      );
+      return response.data;
+    } catch (error: any) {
+      if (error.status === 400) {
+        alert('Phone number already exists');
+      }
+    }
   }
   async deleteWaitlist(id: string) {
     await axios.post(`${this.newApiUrl}/waitlist/delete/${id}`);
   }
   async checkInWaitlist(id: string) {
     await axios.post(`${this.newApiUrl}/waitlist/checkin/${id}`);
+  }
+  async getToc() {
+    const response = await axios.get(this.newApiUrl + '/toc');
+    return response.data;
+  }
+  async addToToc(data: any) {
+    try {
+      const response = await axios.post(`${this.newApiUrl}/toc`, data);
+      return response.data;
+    } catch (error: any) {
+      if (error.status === 400) {
+        alert('Phone number already exists');
+      }
+    }
+  }
+  async updateToToc(id: string, updatedData: any) {
+    try {
+      const response = await axios.post(
+        `${this.newApiUrl}/toc/update/${id}`,
+        updatedData
+      );
+      return response.data;
+    } catch (error: any) {
+      if (error.status === 400) {
+        alert('Phone number already exists');
+      }
+    }
+  }
+  async deleteToc(id: string) {
+    await axios.post(`${this.newApiUrl}/toc/delete/${id}`);
+  }
+  async checkInToc(id: string) {
+    await axios.post(`${this.newApiUrl}/toc/checkin/${id}`);
+  }
+
+  async getTocSettings() {
+    const response = await axios.get(this.newApiUrl + '/toc-settings');
+    return response.data;
+  }
+
+  async updateTocSettings(id: string, updatedData: any) {
+    try {
+      const response = await axios.post(
+        `${this.newApiUrl}/toc-settings/${id}`,
+        updatedData
+      );
+      return response.data;
+    } catch (error: any) {
+      if (error.status === 400) {
+        alert('Phone number already exists');
+      }
+    }
   }
 
   async getAllGames() {

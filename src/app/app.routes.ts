@@ -9,6 +9,7 @@ import { AuthGuard } from './auth.guard';
 import { GameComponent } from './game/game.component';
 import { ReviewComponent } from './review/review.component';
 import { SpecialEventsComponent } from './special-events/special-events.component';
+import { TocComponent } from './toc/toc.component';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -19,6 +20,7 @@ export const routes: Routes = [
     component: WaitlistComponent,
     canActivate: [AuthGuard],
   },
+  { path: 'toc', component: TocComponent, canActivate: [AuthGuard] },
   { path: 'game', component: GameComponent, canActivate: [AuthGuard] },
   { path: 'gallery', component: GalleryComponent, canActivate: [AuthGuard] },
   { path: 'review', component: ReviewComponent, canActivate: [AuthGuard] },
