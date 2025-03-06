@@ -95,6 +95,25 @@
                 <option [ngValue]="false">Not Live</option>
               </select>
             </div>
+
+            <div class="mb-3">
+              <label for="url">URL</label>
+              <input
+                type="text"
+                id="url"
+                formControlName="url"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid': fval['url'].errors && submitted
+                }"
+              />
+              <div
+                *ngIf="fval['url'].errors && submitted"
+                class="invalid-feedback"
+              >
+                URL is required.
+              </div>
+            </div>
           </form>
         </div>
         <div class="modal-footer">
@@ -208,6 +227,25 @@
                 <option [ngValue]="true">Live</option>
                 <option [ngValue]="false">Not Live</option>
               </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="updateUrl">URL</label>
+              <input
+                type="text"
+                id="updateUrl"
+                formControlName="url"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid': fvalUpdate['url'].errors && submitted
+                }"
+              />
+              <div
+                *ngIf="fvalUpdate['url'].errors && submitted"
+                class="invalid-feedback"
+              >
+                URL is required.
+              </div>
             </div>
           </form>
         </div>
@@ -348,6 +386,7 @@
             <th>Description</th>
             <th>Image</th>
             <th>Status</th>
+            <th>URL</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -364,6 +403,7 @@
               />
             </td>
             <td>{{ event.is_live ? "Live" : "Not Live" }}</td>
+            <td>{{ event.url }}</td>
             <td>
               <div class="btn-group">
                 <button

@@ -37,6 +37,7 @@ export class SpecialEventsComponent implements OnInit {
       event_name: ['', Validators.required],
       event_description: ['', Validators.required],
       event_image: ['', Validators.required],
+      url: ['', Validators.required],
       is_live: [Boolean, false],
     });
 
@@ -44,6 +45,7 @@ export class SpecialEventsComponent implements OnInit {
       event_name: ['', Validators.required],
       event_description: ['', Validators.required],
       event_image: [''],
+      url: [''],
       is_live: [Boolean, false],
     });
   }
@@ -120,6 +122,7 @@ export class SpecialEventsComponent implements OnInit {
         this.eventForm.get('event_description')?.value
       );
       formData.append('is_live', this.eventForm.get('is_live')?.value);
+      formData.append('url', this.eventForm.get('url')?.value);
 
       if (this.selectedFile) {
         formData.append('image', this.selectedFile);
@@ -154,6 +157,7 @@ export class SpecialEventsComponent implements OnInit {
       );
 
       formData.append('is_live', this.updateForm.get('is_live')?.value);
+      formData.append('url', this.updateForm.get('url')?.value);
 
       if (this.selectedFile) {
         formData.append('image', this.selectedFile);
@@ -176,7 +180,8 @@ export class SpecialEventsComponent implements OnInit {
     this.updateForm.patchValue({
       event_name: event.event_name,
       event_description: event.event_description,
-      is_live: event.is_live,
+      url: event.url,
+      is_live: event.is_live === 0 ? false : true,
     });
     this.updateImagePreview = event.event_image;
   }
