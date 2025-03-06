@@ -66,22 +66,3 @@ textarea.form-control {
     font-size: 12px;
   }
 }
-
-.status-badge {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  display: inline-block;
-  text-align: center;
-}
-
-.status-live {
-  background-color: #28a745;
-  color: white;
-}
-
-.status-not-live {
-  background-color: #dc3545;
-  color: white;
-}
