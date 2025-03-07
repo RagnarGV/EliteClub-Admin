@@ -232,16 +232,18 @@
 
   <div
     class="modal fade"
-    id="TocSettingsModal"
+    id="AddTocSettingsModal"
     tabindex="-1"
     role="dialog"
-    aria-labelledby="TocSettingsModal"
+    aria-labelledby="AddTocSettingsModal"
     aria-hidden="true"
   >
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="TocSettingsModalTitle">TOC Settings</h5>
+          <h5 class="modal-title" id="TocSettingsModalTitle">
+            Add TOC Settings
+          </h5>
           <button
             type="button"
             class="btn-close"
@@ -250,7 +252,22 @@
           ></button>
         </div>
         <div class="modal-body">
-          <form [formGroup]="TocSettingsForm" role="form">
+          <form [formGroup]="AddTocSettingsForm" role="form">
+            <label for="day_date">Day & Date</label>
+            <input
+              type="text"
+              name="day_date"
+              id="day_date"
+              formControlName="day_date"
+              [ngClass]="{ 'is-invalid': fvaltoc['day_date'].errors }"
+              class="form-control"
+            />
+            <div
+              *ngIf="fvaltoc['day_date'].errors && submitted"
+              class="invalid-feedback"
+            >
+              Day & Date is required.
+            </div>
             <label for="seats">Seats</label>
             <input
               type="text"
@@ -265,6 +282,22 @@
               class="invalid-feedback"
             >
               Seats is required.
+            </div>
+            <label for="description">Description</label>
+            <textarea
+              type="text"
+              name="description"
+              id="description"
+              formControlName="description"
+              [ngClass]="{ 'is-invalid': fvaltoc['description'].errors }"
+              class="form-control"
+            >
+            </textarea>
+            <div
+              *ngIf="fvaltoc['description'].errors && submitted"
+              class="invalid-feedback"
+            >
+              Description is required.
             </div>
             <label for="buy_in">Buy-in</label>
             <input
@@ -313,10 +346,136 @@
           <button
             type="button"
             class="btn btn-primary"
-            [disabled]="!TocSettingsForm.valid"
-            (click)="updateTocSettings()"
+            [disabled]="!AddTocSettingsForm.valid"
+            (click)="AddTocSettings()"
           >
             Add
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="UpdateTocSettingsModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="UpdateTocSettingsModal"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="TocSettingsModalTitle">
+            Update TOC Settings
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="UpdateTocSettingsForm" role="form">
+            <label for="day_date">Day & Date</label>
+            <input
+              type="text"
+              name="day_date"
+              id="day_date"
+              formControlName="day_date"
+              [ngClass]="{ 'is-invalid': fvalupdatetoc['day_date'].errors }"
+              class="form-control"
+            />
+            <div
+              *ngIf="fvalupdatetoc['day_date'].errors && submitted"
+              class="invalid-feedback"
+            >
+              Day & Date is required.
+            </div>
+            <label for="seats">Seats</label>
+            <input
+              type="text"
+              name="seats"
+              id="seats"
+              formControlName="seats"
+              [ngClass]="{ 'is-invalid': fvalupdatetoc['seats'].errors }"
+              class="form-control"
+            />
+            <div
+              *ngIf="fvalupdatetoc['seats'].errors && submitted"
+              class="invalid-feedback"
+            >
+              Seats is required.
+            </div>
+            <label for="description">Description</label>
+            <textarea
+              type="text"
+              name="description"
+              id="description"
+              formControlName="description"
+              [ngClass]="{ 'is-invalid': fvalupdatetoc['description'].errors }"
+              class="form-control"
+            >
+            </textarea>
+            <div
+              *ngIf="fvalupdatetoc['description'].errors && submitted"
+              class="invalid-feedback"
+            >
+              Description is required.
+            </div>
+            <label for="buy_in">Buy-in</label>
+            <input
+              type="text"
+              name="buy_in"
+              id="buy_in"
+              formControlName="buy_in"
+              [ngClass]="{ 'is-invalid': fvalupdatetoc['buy_in'].errors }"
+              class="form-control"
+            />
+            <div
+              *ngIf="fvalupdatetoc['buy_in'].errors && submitted"
+              class="invalid-feedback"
+            >
+              Buy-in is required.
+            </div>
+            <label for="gameType">Game Type</label>
+            <select
+              name="gameType"
+              id="gameType"
+              formControlName="gameType"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': fvalupdatetoc['gameType'].errors }"
+            >
+              <option *ngFor="let game of scheduleGames" [value]="game.type">
+                {{ game.type }}
+              </option>
+            </select>
+            <div
+              *ngIf="fvalupdatetoc['gameType'].errors && submitted"
+              class="invalid-feedback"
+            >
+              Game Type is required.
+            </div>
+            <br />
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            [disabled]="!UpdateTocSettingsForm.valid"
+            (click)="updateTocSettings()"
+          >
+            Update
           </button>
         </div>
       </div>
@@ -422,84 +581,197 @@
       </div>
     </div>
   </div>
-
-  <!-- Button to open the Add Schedule Modal -->
-  <div align="center">
-    <button
-      type="button"
-      class="btn-custom"
-      data-bs-toggle="modal"
-      data-bs-target="#AddTocModal"
+  <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+    <li class="nav-item me-2" role="presentation">
+      <button
+        class="nav-link active"
+        id="home-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#home"
+        type="button"
+        role="tab"
+        aria-controls="home"
+        aria-selected="true"
+      >
+        Waitlist
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="profile-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#profile"
+        type="button"
+        role="tab"
+        aria-controls="profile"
+        aria-selected="false"
+      >
+        TOC Schedule
+      </button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div
+      class="tab-pane fade show active"
+      id="home"
+      role="tabpanel"
+      aria-labelledby="home-tab"
     >
-      Add TOC
-    </button>
-    <button
-      type="button"
-      class="btn-custom float-end"
-      data-bs-toggle="modal"
-      data-bs-target="#TocSettingsModal"
+      <div class="mt-5" align="center">
+        <button
+          type="button"
+          class="btn-custom"
+          data-bs-toggle="modal"
+          data-bs-target="#AddTocModal"
+        >
+          Add TOC
+        </button>
+      </div>
+      <br />
+
+      <div align="center">
+        <div class="table-div mb-5 bg-white">
+          <table>
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Initial</th>
+                <th>Phone</th>
+                <th>Game</th>
+                <th>SMS</th>
+                <th>Checked in</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let toc of schedule">
+                <td>{{ toc.firstName }}</td>
+                <td>{{ toc.lastInitial }}</td>
+                <td>{{ toc.phone }}</td>
+                <td>{{ toc.gameType }}</td>
+                <td>{{ toc.smsUpdates }}</td>
+                <td>{{ toc.checkedIn }}</td>
+                <td>
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-dark"
+                      data-bs-toggle="modal"
+                      data-bs-target="#CheckinModal"
+                      (click)="setUpdateData(toc)"
+                    >
+                      <i class="fa fa-check" aria-hidden="true"></i>
+                    </button>
+                    &nbsp;
+                    <button
+                      class="btn btn-danger rounded"
+                      (click)="deleteToc(toc.id)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#DeleteModal"
+                    >
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+
+                    &nbsp;
+                    <button
+                      class="btn btn-primary"
+                      (click)="setUpdateData(toc)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#UpdateModal"
+                    >
+                      <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div
+      class="tab-pane fade"
+      id="profile"
+      role="tabpanel"
+      aria-labelledby="profile-tab"
     >
-      TOC Settings
-    </button>
-  </div>
-  <br />
+      <div class="mt-5" align="center">
+        <button
+          type="button"
+          class="btn-custom"
+          data-bs-toggle="modal"
+          data-bs-target="#AddTocSettingsModal"
+        >
+          Add TOC Schedule
+        </button>
+      </div>
+      <br />
+      <div align="center">
+        <div class="table-div mb-5 bg-white">
+          <table>
+            <thead>
+              <tr>
+                <th>Day & Date</th>
+                <th>Game</th>
+                <th>Description</th>
+                <th>Buy-in</th>
+                <th>Seats</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let toc of tocSettings">
+                <td>{{ toc.day_date }}</td>
+                <td>{{ toc.gameType }}</td>
+                <td>{{ toc.description }}</td>
+                <td>{{ toc.buy_in }}</td>
+                <td>{{ toc.seats }}</td>
+                <td>{{ toc.is_live }}</td>
+                <td>
+                  <div class="btn-group">
+                    @if(toc.is_live == 1){
+                    <button
+                      type="button"
+                      class="btn btn-success transition-all ease-in"
+                      (click)="setTocStatus(toc.id)"
+                    >
+                      <i class="fa fa-close" aria-hidden="true"></i>
+                    </button>
+                    &nbsp; } @else {
+                    <button
+                      type="button"
+                      class="btn btn-dark transition-all ease-in"
+                      (click)="setTocStatus(toc.id)"
+                    >
+                      <i class="fa fa-check" aria-hidden="true"></i>
+                    </button>
+                    &nbsp; }
+                    <button
+                      class="btn btn-danger rounded"
+                      (click)="deleteTocSettings(toc.id)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#DeleteModal"
+                    >
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
 
-  <div align="center">
-    <div class="table-div mb-5 bg-white">
-      <table>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Initial</th>
-            <th>Phone</th>
-            <th>Game</th>
-            <th>SMS</th>
-            <th>Checked in</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let toc of schedule">
-            <td>{{ toc.firstName }}</td>
-            <td>{{ toc.lastInitial }}</td>
-            <td>{{ toc.phone }}</td>
-            <td>{{ toc.gameType }}</td>
-            <td>{{ toc.smsUpdates }}</td>
-            <td>{{ toc.checkedIn }}</td>
-            <td>
-              <div class="btn-group">
-                <button
-                  type="button"
-                  class="btn btn-dark"
-                  data-bs-toggle="modal"
-                  data-bs-target="#CheckinModal"
-                  (click)="setUpdateData(toc)"
-                >
-                  <i class="fa fa-check" aria-hidden="true"></i>
-                </button>
-                &nbsp;
-                <button
-                  class="btn btn-danger rounded"
-                  (click)="deleteToc(toc.id)"
-                  data-bs-toggle="modal"
-                  data-bs-target="#DeleteModal"
-                >
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-                </button>
-
-                &nbsp;
-                <button
-                  class="btn btn-primary"
-                  (click)="setUpdateData(toc)"
-                  data-bs-toggle="modal"
-                  data-bs-target="#UpdateModal"
-                >
-                  <i class="fa fa-pencil" aria-hidden="true"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                    &nbsp;
+                    <button
+                      class="btn btn-primary"
+                      (click)="setTocUpdateData(toc)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#UpdateTocSettingsModal"
+                    >
+                      <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
+  <!-- Button to open the Add Schedule Modal -->
 </div>

@@ -42,7 +42,8 @@ export class TocComponent {
   viewSchedule: any;
   selectedItem: any = null;
   checkinId: any;
-  TocSettingsForm: FormGroup;
+  AddTocSettingsForm: FormGroup;
+  UpdateTocSettingsForm: FormGroup;
   tocSettings: any;
   tocSettingId: any;
   constructor(
@@ -67,8 +68,18 @@ export class TocComponent {
       smsUpdates: [Boolean, false],
       checkedIn: [Boolean, false],
     });
-    this.TocSettingsForm = this.fb.group({
+    this.AddTocSettingsForm = this.fb.group({
+      day_date: ['', Validators.required],
       gameType: ['', Validators.required],
+      description: ['', Validators.required],
+      is_live: [Boolean, false],
+      buy_in: ['', Validators.required],
+      seats: ['', Validators.required],
+    });
+    this.UpdateTocSettingsForm = this.fb.group({
+      day_date: ['', Validators.required],
+      gameType: ['', Validators.required],
+      description: ['', Validators.required],
       is_live: [Boolean, false],
       buy_in: ['', Validators.required],
       seats: ['', Validators.required],
@@ -78,7 +89,10 @@ export class TocComponent {
     return this.AddForm.controls;
   }
   get fvaltoc() {
-    return this.TocSettingsForm.controls;
+    return this.AddTocSettingsForm.controls;
+  }
+  get fvalupdatetoc() {
+    return this.UpdateTocSettingsForm.controls;
   }
   get fvalupdate() {
     return this.UpdateForm.controls;
@@ -93,8 +107,6 @@ export class TocComponent {
   getTocSettings() {
     this.services.getTocSettings().then((data) => {
       this.tocSettings = data;
-      this.tocSettingId = this.tocSettings[0].id;
-      this.TocSettingsForm.patchValue(this.tocSettings[0]);
     });
   }
 
@@ -144,6 +156,29 @@ export class TocComponent {
       }
     );
   }
+  AddTocSettings() {
+    this.submitted = true;
+
+    if (this.AddTocSettingsForm.invalid) {
+      return;
+    }
+
+    const data = this.AddTocSettingsForm.value;
+
+    this.services.AddTocSettings(data).then(
+      (data) => {
+        this.AddTocSettingsForm.reset;
+        this.getTocSettings();
+
+        $('#AddTocSettingsModal').modal('hide');
+        this.successMessage = 'Toc settings added successfully.';
+        $('#SuccessModal').modal('show');
+      },
+      (error) => {
+        console.error('Error updating Toc:', error);
+      }
+    );
+  }
 
   resetForm(): void {
     this.AddForm.reset();
@@ -184,18 +219,18 @@ export class TocComponent {
   updateTocSettings() {
     this.submitted = true;
 
-    if (this.TocSettingsForm.invalid) {
+    if (this.UpdateTocSettingsForm.invalid) {
       return;
     }
 
-    const updatedData = this.TocSettingsForm.value;
+    const updatedData = this.UpdateTocSettingsForm.value;
 
-    this.services.updateTocSettings(this.tocSettingId, updatedData).then(
+    this.services.updateTocSettings(this.updateId, updatedData).then(
       (data) => {
-        this.TocSettingsForm.reset;
+        this.UpdateTocSettingsForm.reset;
         this.getTocSettings();
 
-        $('#TocSettingsModal').modal('hide');
+        $('#UpdateTocSettingsModal').modal('hide');
         this.successMessage = 'Toc settings updated successfully.';
         $('#SuccessModal').modal('show');
       },
@@ -207,6 +242,10 @@ export class TocComponent {
   deleteToc(id: any) {
     this.deleteId = id;
     console.log(this.deleteId);
+  }
+  deleteTocSettings(id: any) {
+    this.tocSettingId = id;
+    console.log(this.tocSettingId);
   }
   removeToc(id: string): void {
     this.services.deleteToc(id).then(
@@ -222,19 +261,35 @@ export class TocComponent {
     );
   }
   ConfirmDelete() {
-    this.services.deleteToc(this.deleteId).then(
-      () => {
-        this.schedule = this.schedule.filter(
-          (schedules) => schedules.id !== this.deleteId
-        );
-        this.getToc();
-        console.log(`Deleted Toc with ID ${this.deleteId}`);
-      },
-      (error) => {
-        console.error('Error deleting Toc:', error);
-      }
-    );
-    this.deleteId = undefined;
+    if (this.deleteId) {
+      this.services.deleteToc(this.deleteId).then(
+        () => {
+          this.schedule = this.schedule.filter(
+            (schedules) => schedules.id !== this.deleteId
+          );
+          this.getToc();
+          console.log(`Deleted Toc with ID ${this.deleteId}`);
+        },
+        (error) => {
+          console.error('Error deleting Toc:', error);
+        }
+      );
+      this.deleteId = undefined;
+    } else if (this.tocSettingId) {
+      this.services.deleteTocSettings(this.tocSettingId).then(
+        () => {
+          this.tocSettings = this.tocSettings.filter(
+            (schedules: any) => schedules.id !== this.tocSettingId
+          );
+          this.getTocSettings();
+          console.log(`Deleted Toc with ID ${this.tocSettingId}`);
+        },
+        (error) => {
+          console.error('Error deleting Toc:', error);
+        }
+      );
+      this.tocSettingId = undefined;
+    }
     $('#DeleteModal').modal('hide');
     this.successMessage = 'Toc deleted successfully.';
     $('#SuccessModal').modal('show');
@@ -265,14 +320,19 @@ export class TocComponent {
     this.UpdateForm.patchValue(item);
   }
 
-  // getQuotesbyId(id: any) {
-  //   this.updateId = id;
-  //   this.services.getsingleQuote(id).subscribe((data: any) => {
-  //     this.selectedQuote = data;
-  //     this.UpdateForm.controls['mood'].setValue(data.mood + ',' + data.emotion);
-  //     this.UpdateForm.controls['quote'].setValue(data.quote);
-  //   });
-  // }
+  setTocUpdateData(item: any) {
+    this.selectedItem = item;
+    this.updateId = item.id;
+    this.checkinId = item.id;
+    console.log(this.selectedItem);
+    this.UpdateTocSettingsForm.patchValue(item);
+  }
+
+  setTocStatus(id: any) {
+    this.services.setTocStatus(id).then(() => {
+      this.getTocSettings();
+    });
+  }
   Reload() {
     location.reload();
   }

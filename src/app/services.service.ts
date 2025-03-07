@@ -175,15 +175,33 @@ export class ServicesService {
     await axios.post(`${this.newApiUrl}/toc/checkin/${id}`);
   }
 
+  async setTocStatus(id: string) {
+    await axios.post(`${this.newApiUrl}/toc-settings/status/${id}`);
+  }
+
   async getTocSettings() {
     const response = await axios.get(this.newApiUrl + '/toc-settings');
     return response.data;
   }
 
+  async AddTocSettings(updatedData: any) {
+    try {
+      const response = await axios.post(
+        `${this.newApiUrl}/toc-settings`,
+        updatedData
+      );
+      return response.data;
+    } catch (error: any) {
+      if (error.status === 400) {
+        console.log(error);
+      }
+    }
+  }
+
   async updateTocSettings(id: string, updatedData: any) {
     try {
       const response = await axios.post(
-        `${this.newApiUrl}/toc-settings/${id}`,
+        `${this.newApiUrl}/toc-settings/update/${id}`,
         updatedData
       );
       return response.data;
@@ -192,6 +210,9 @@ export class ServicesService {
         alert('Phone number already exists');
       }
     }
+  }
+  async deleteTocSettings(id: string) {
+    await axios.post(`${this.newApiUrl}/toc-settings/delete/${id}`);
   }
 
   async getAllGames() {
