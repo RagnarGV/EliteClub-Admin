@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ServicesService, Game } from '../services.service';
 import { Observable } from 'rxjs';
@@ -10,7 +15,7 @@ declare var $: any;
 @Component({
   selector: 'app-toc',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, HttpClientModule, ReactiveFormsModule],
   templateUrl: './toc.component.html',
   styleUrl: './toc.component.scss',
 })
@@ -45,6 +50,7 @@ export class TocComponent {
   AddTocSettingsForm: FormGroup;
   UpdateTocSettingsForm: FormGroup;
   tocSettings: any;
+  selectedTocScheduleId: any = 'Select the TOC Schedule';
   tocSettingId: any;
   constructor(
     private services: ServicesService,
@@ -99,7 +105,7 @@ export class TocComponent {
   }
 
   ngOnInit(): void {
-    this.getToc();
+    // this.getToc(id);
     this.getGames();
     this.getTocSettings();
   }
@@ -111,7 +117,7 @@ export class TocComponent {
   }
 
   getToc() {
-    this.services.getToc().then((data) => {
+    this.services.getToc(this.selectedTocScheduleId).then((data) => {
       this.schedule = data;
       console.log(this.schedule);
     });

@@ -619,6 +619,20 @@
       aria-labelledby="home-tab"
     >
       <div class="mt-5" align="center">
+        <select
+          name="tocScheduleId"
+          id="tocScheduleId"
+          [(ngModel)]="selectedTocScheduleId"
+          (change)="getToc()"
+          class="form-select col-3"
+          style="width: auto"
+        >
+          <option>Select the TOC Schedule</option>
+          @for(tocSchedule of tocSettings; track tocSchedule.id){
+          <option [value]="tocSchedule.id">{{ tocSchedule.day_date }}</option>
+          }
+        </select>
+        <br />
         <button
           type="button"
           class="btn-custom"

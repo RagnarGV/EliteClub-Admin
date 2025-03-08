@@ -141,8 +141,8 @@ export class ServicesService {
   async checkInWaitlist(id: string) {
     await axios.post(`${this.newApiUrl}/waitlist/checkin/${id}`);
   }
-  async getToc() {
-    const response = await axios.get(this.newApiUrl + '/toc');
+  async getToc(id: any) {
+    const response = await axios.get(this.newApiUrl + '/toc/' + id);
     return response.data;
   }
   async addToToc(data: any) {
