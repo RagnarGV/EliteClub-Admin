@@ -30,12 +30,14 @@
               <input
                 type="text"
                 id="type"
-                formControlName="type"
-                [ngClass]="{ 'is-invalid': fval['type'].errors && submitted }"
+                formControlName="gameType"
+                [ngClass]="{
+                  'is-invalid': fval['gameType'].errors && submitted
+                }"
                 class="form-control"
               />
               <div
-                *ngIf="fval['type'].errors && submitted"
+                *ngIf="fval['gameType'].errors && submitted"
                 class="invalid-feedback"
               >
                 Type is required.
@@ -108,14 +110,14 @@
               <input
                 type="text"
                 id="updateType"
-                formControlName="type"
+                formControlName="gameType"
                 [ngClass]="{
-                  'is-invalid': fvalUpdate['type'].errors && submitted
+                  'is-invalid': fvalUpdate['gameType'].errors && submitted
                 }"
                 class="form-control"
               />
               <div
-                *ngIf="fvalUpdate['type'].errors && submitted"
+                *ngIf="fvalUpdate['gameType'].errors && submitted"
                 class="invalid-feedback"
               >
                 Type is required.
@@ -251,7 +253,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let game of games">
-            <td>{{ game.type }}</td>
+            <td>{{ game.gameType }}</td>
             <td>{{ game.limit }}</td>
             <td>
               <div class="btn-group">

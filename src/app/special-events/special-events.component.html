@@ -402,7 +402,8 @@
                 (click)="openImageModal(event.image)"
               />
             </td>
-            <td>{{ event.is_live ? "Live" : "Not Live" }}</td>
+            <td *ngIf="event.is_live == true">Live</td>
+            <td *ngIf="event.is_live == false">Not Live</td>
             <td>{{ event.url }}</td>
             <td>
               <div class="btn-group">

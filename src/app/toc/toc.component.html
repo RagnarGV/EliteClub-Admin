@@ -740,10 +740,11 @@
                 <td>{{ toc.description }}</td>
                 <td>{{ toc.buy_in }}</td>
                 <td>{{ toc.seats }}</td>
-                <td>{{ toc.is_live }}</td>
+                <td *ngIf="toc.is_live == true">Live</td>
+                <td *ngIf="toc.is_live == false">Not Live</td>
                 <td>
                   <div class="btn-group">
-                    @if(toc.is_live == 1){
+                    @if(toc.is_live == true){
                     <button
                       type="button"
                       class="btn btn-success transition-all ease-in"

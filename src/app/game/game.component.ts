@@ -29,12 +29,12 @@ export class GameComponent implements OnInit {
 
   constructor(private services: ServicesService, private fb: FormBuilder) {
     this.gameForm = this.fb.group({
-      type: ['', Validators.required],
+      gameType: ['', Validators.required],
       limit: ['', Validators.required],
     });
 
     this.updateForm = this.fb.group({
-      type: ['', Validators.required],
+      gameType: ['', Validators.required],
       limit: ['', Validators.required],
     });
   }

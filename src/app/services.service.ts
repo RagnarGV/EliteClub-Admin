@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { Observable } from 'rxjs';
-
+import apiClient from './axios-config';
+import { HttpClient } from '@angular/common/http';
 export interface Game {
   type: string;
   limit: string;
@@ -19,6 +20,7 @@ export interface Schedule {
   day: string;
   time: string;
   games: Game[];
+  is_live: string;
   description: string;
 }
 
@@ -26,13 +28,15 @@ export interface Schedule {
   providedIn: 'root',
 })
 export class ServicesService {
-  private apiUrl = 'https://eliteclub-api.onrender.com/api';
+  //private apiUrl = 'https://eliteclub-api.onrender.com/api';
+
   private newApiUrl = 'https://clubelite.ca/apis';
   //private apiUrl = 'http://localhost:3000/api';
-  constructor() {}
+  constructor(private http: HttpClient) {}
+
   async register(data: any): Promise<any> {
     try {
-      const response = await axios.post(this.apiUrl + '/register', data);
+      const response = await axios.post(this.newApiUrl + '/register', data);
       return response.data;
     } catch (error: any) {
       throw error.response ? error.response.data : error;
@@ -40,9 +44,9 @@ export class ServicesService {
   }
   async login(data: any): Promise<any> {
     try {
-      const response = await axios.post(this.apiUrl + '/login', data);
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
+      const response = await apiClient.post(this.newApiUrl + '/login', data);
+      if (response.data.csrf_token) {
+        localStorage.setItem('token', response.data.csrf_token);
         localStorage.setItem('name', response.data.user.name);
       }
       return response.data;
@@ -60,9 +64,8 @@ export class ServicesService {
   logout(): void {
     localStorage.removeItem('token');
   }
-  async getSchedule() {
-    const response = await axios.get(this.newApiUrl + '/schedule');
-    return response.data;
+  getSchedule(): Observable<any> {
+    return this.http.get<any>(this.newApiUrl + '/schedule');
   }
 
   async getGames() {
@@ -104,7 +107,7 @@ export class ServicesService {
   }
 
   async updateGalleryItem(id: string, updatedData: any) {
-    await axios.post(`${this.newApiUrl}/gallery/update/${id}`, updatedData);
+    await apiClient.post(`${this.newApiUrl}/gallery/update/${id}`, updatedData);
   }
 
   async getWaitlist() {

@@ -58,7 +58,7 @@
               *ngFor="let game of viewSchedule.games; let i = index"
               class="mb-3 border p-3"
             >
-              <p><strong>Type:</strong> {{ game.type }}</p>
+              <p><strong>Type:</strong> {{ game.gameType }}</p>
               <p><strong>Limit:</strong> {{ game.limit }}</p>
             </div>
           </div>
@@ -157,22 +157,22 @@
                 <label for="type-{{ i }}">Type</label>
                 <select
                   id="type-{{ i }}"
-                  formControlName="type"
+                  formControlName="gameType"
                   class="form-control"
                   [ngClass]="{
                     'is-invalid':
-                      getGameUpdateFormGroup(i).controls['type'].errors &&
+                      getGameUpdateFormGroup(i).controls['gameType'].errors &&
                       submitted
                   }"
                 >
                   <option value="">Select a game</option>
-                  <option *ngFor="let game of allGames" [value]="game.type">
-                    {{ game.type }}
+                  <option *ngFor="let game of allGames" [value]="game.gameType">
+                    {{ game.gameType }}
                   </option>
                 </select>
                 <div
                   *ngIf="
-                    getGameUpdateFormGroup(i).controls['type'].errors &&
+                    getGameUpdateFormGroup(i).controls['gameType'].errors &&
                     submitted
                   "
                   class="invalid-feedback"
@@ -314,21 +314,22 @@
                 <label for="type-{{ i }}">Type</label>
                 <select
                   id="type-{{ i }}"
-                  formControlName="type"
+                  formControlName="gameType"
                   class="form-control"
                   [ngClass]="{
                     'is-invalid':
-                      getGameFormGroup(i).controls['type'].errors && submitted
+                      getGameFormGroup(i).controls['gameType'].errors &&
+                      submitted
                   }"
                 >
                   <option value="">Select a game</option>
-                  <option *ngFor="let game of allGames" [value]="game.type">
-                    {{ game.type }}
+                  <option *ngFor="let game of allGames" [value]="game.gameType">
+                    {{ game.gameType }}
                   </option>
                 </select>
                 <div
                   *ngIf="
-                    getGameFormGroup(i).controls['type'].errors && submitted
+                    getGameFormGroup(i).controls['gameType'].errors && submitted
                   "
                   class="invalid-feedback"
                 >
@@ -480,6 +481,8 @@
             <th>Day</th>
             <th>time</th>
             <th>Description</th>
+            <th>Status</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -487,6 +490,8 @@
             <td>{{ quotes.day }}</td>
             <td>{{ quotes.time }}</td>
             <td>{{ quotes.description }}</td>
+
+            <td>{{ quotes.is_live }}</td>
             <td>
               <div class="btn-group">
                 <button

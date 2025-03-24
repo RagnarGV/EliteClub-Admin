@@ -41,7 +41,7 @@ export class ScheduleComponent implements OnInit {
   emotion: any;
   successMessage: any;
   schedule: Schedule[] = [];
-  scheduleGames: Game[] = [];
+  scheduleGames: any[] = [];
   selectedSchedule: any;
   selectedLimits: number[] = []; // Track slider values
   viewSchedule: any;
@@ -92,7 +92,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   getSchedule() {
-    this.services.getSchedule().then((data) => {
+    this.services.getSchedule().subscribe((data) => {
       this.schedule = data;
       console.log(this.schedule);
     });
@@ -118,7 +118,7 @@ export class ScheduleComponent implements OnInit {
     gamesArray.clear(); // Clear existing entries
     item.games.forEach((game: any) => {
       const gameGroup = this.fb.group({
-        type: [game.type, Validators.required],
+        gameType: [game.gameType, Validators.required],
         limit: [game.limit, Validators.required],
       });
       gamesArray.push(gameGroup);
@@ -129,7 +129,7 @@ export class ScheduleComponent implements OnInit {
   }
   addGame(): void {
     const gameGroup = this.fb.group({
-      type: ['', Validators.required],
+      gameType: ['', Validators.required],
       limit: ['', Validators.required], // Default limit
     });
     this.games.push(gameGroup);
@@ -141,7 +141,7 @@ export class ScheduleComponent implements OnInit {
 
   addGameAdd(): void {
     const gameGroup = this.fb.group({
-      type: ['', Validators.required],
+      gameType: ['', Validators.required],
       limit: ['', Validators.required], // Default limit
     });
     this.addGames.push(gameGroup);
@@ -273,7 +273,7 @@ export class ScheduleComponent implements OnInit {
         gamesArray.clear(); // Clear existing entries
         data.games.forEach((game: any) => {
           const gameGroup = this.fb.group({
-            type: [game.type, Validators.required],
+            gameType: [game.gametype, Validators.required],
             limit: [game.limit, Validators.required],
           });
           gamesArray.push(gameGroup);
