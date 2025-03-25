@@ -147,6 +147,17 @@
             >
               Description is required.
             </div>
+            <div class="mb-3">
+              <label for="updateIsLive">Status</label>
+              <select
+                id="updateIsLive"
+                formControlName="is_live"
+                class="form-control"
+              >
+                <option [ngValue]="true">Live</option>
+                <option [ngValue]="false">Not Live</option>
+              </select>
+            </div>
             <h5>Games</h5>
             <div formArrayName="games">
               <div
@@ -302,6 +313,18 @@
               class="invalid-feedback"
             >
               Description is required.
+            </div>
+
+            <div class="mb-3">
+              <label for="updateIsLive">Status</label>
+              <select
+                id="updateIsLive"
+                formControlName="is_live"
+                class="form-control"
+              >
+                <option [ngValue]="true">Live</option>
+                <option [ngValue]="false">Not Live</option>
+              </select>
             </div>
 
             <h5>Games</h5>
@@ -491,7 +514,8 @@
             <td>{{ quotes.time }}</td>
             <td>{{ quotes.description }}</td>
 
-            <td>{{ quotes.is_live }}</td>
+            <td *ngIf="quotes.is_live == true">Live</td>
+            <td *ngIf="quotes.is_live == false">Not Live</td>
             <td>
               <div class="btn-group">
                 <button

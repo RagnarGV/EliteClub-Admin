@@ -57,12 +57,14 @@ export class ScheduleComponent implements OnInit {
       day: ['', Validators.required],
       time: ['', Validators.required],
       description: ['', Validators.required],
+      is_live: [false, Validators.required],
       games: this.fb.array([]),
     });
     this.AddForm = this.fb.group({
       day: ['', Validators.required],
       time: ['', Validators.required],
       description: ['', Validators.required],
+      is_live: [false, Validators.required],
       games: this.fb.array([]), // FormArray for games
     });
   }
@@ -114,6 +116,9 @@ export class ScheduleComponent implements OnInit {
     this.updateId = item.id;
     console.log(this.selectedItem);
     this.UpdateForm.patchValue(item);
+    this.UpdateForm.patchValue({
+      is_live: item.is_live == 0 ? false : true,
+    });
     const gamesArray = this.UpdateForm.get('games') as FormArray;
     gamesArray.clear(); // Clear existing entries
     item.games.forEach((game: any) => {
@@ -162,6 +167,7 @@ export class ScheduleComponent implements OnInit {
       day: this.AddForm.controls['day'].value,
       time: this.AddForm.controls['time'].value,
       description: this.AddForm.controls['description'].value,
+      is_live: this.AddForm.controls['is_live'].value,
       games: this.addGames.value,
     };
 
@@ -199,6 +205,7 @@ export class ScheduleComponent implements OnInit {
       day: this.UpdateForm.controls['day'].value,
       time: this.UpdateForm.controls['time'].value,
       description: this.UpdateForm.controls['description'].value,
+      is_live: this.UpdateForm.controls['is_live'].value,
       games: this.games.value,
     };
 

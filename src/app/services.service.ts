@@ -20,7 +20,7 @@ export interface Schedule {
   day: string;
   time: string;
   games: Game[];
-  is_live: string;
+  is_live: boolean;
   description: string;
 }
 
@@ -67,6 +67,22 @@ export class ServicesService {
   getSchedule(): Observable<any> {
     return this.http.get<any>(this.newApiUrl + '/schedule');
   }
+
+  // getSchedule(): Observable<any> {
+  //   return new Observable<any>((observer) => {
+  //     const fetchData = () => {
+  //       this.http.get<any>(this.newApiUrl + '/schedule').subscribe(
+  //         (data) => observer.next(data), // Emit the fetched data
+  //         (error) => observer.error(error) // Handle errors
+  //       );
+  //     };
+
+  //     fetchData(); // Fetch immediately
+  //     const intervalId = setInterval(fetchData, 5000); // Fetch every 5 seconds
+
+  //     return () => clearInterval(intervalId); // Cleanup on unsubscribe
+  //   });
+  // }
 
   async getGames() {
     const response = await axios.get(`${this.newApiUrl}/schedule/games`);
