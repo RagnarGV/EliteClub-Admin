@@ -40,7 +40,7 @@ export class GalleryComponent implements OnInit {
   }
 
   getGalleryItems() {
-    this.services.getGallery().then((data) => {
+    this.services.getGallery().subscribe((data: any) => {
       this.gallery = data;
       console.log(this.gallery);
     });

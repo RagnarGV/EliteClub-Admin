@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { Observable } from 'rxjs';
 import apiClient from './axios-config';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 export interface Game {
   type: string;
   limit: string;
@@ -42,11 +42,12 @@ export class ServicesService {
       throw error.response ? error.response.data : error;
     }
   }
+
   async login(data: any): Promise<any> {
     try {
       const response = await apiClient.post(this.newApiUrl + '/login', data);
-      if (response.data.csrf_token) {
-        localStorage.setItem('token', response.data.csrf_token);
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
         localStorage.setItem('name', response.data.user.name);
       }
       return response.data;
@@ -113,9 +114,13 @@ export class ServicesService {
     return response.data;
   }
 
-  async getGallery() {
-    const response = await axios.get(this.newApiUrl + '/gallery');
-    return response.data;
+  getGallery() {
+    const response = this.http.get(this.newApiUrl + '/gallery', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    return response;
   }
 
   async deleteGalleryItem(id: string) {
