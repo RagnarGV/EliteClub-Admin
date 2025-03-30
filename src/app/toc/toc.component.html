@@ -77,8 +77,11 @@
               [ngClass]="{ 'is-invalid': fvalupdate['phone'].errors }"
               class="form-control"
             >
-              <option *ngFor="let game of scheduleGames" [value]="game.type">
-                {{ game.type }}
+              <option
+                *ngFor="let game of scheduleGames"
+                [value]="game.gameType"
+              >
+                {{ game.gameType }}
               </option>
             </select>
             <div
@@ -448,8 +451,11 @@
               class="form-control"
               [ngClass]="{ 'is-invalid': fvalupdatetoc['gameType'].errors }"
             >
-              <option *ngFor="let game of scheduleGames" [value]="game.type">
-                {{ game.type }}
+              <option
+                *ngFor="let game of scheduleGames"
+                [value]="game.gameType"
+              >
+                {{ game.gameType }}
               </option>
             </select>
             <div
