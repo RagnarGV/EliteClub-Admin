@@ -187,8 +187,11 @@
               class="form-control"
               [ngClass]="{ 'is-invalid': fvaladd['phone'].errors }"
             >
-              <option *ngFor="let game of scheduleGames" [value]="game.type">
-                {{ game.type }}
+              <option
+                *ngFor="let game of scheduleGames"
+                [value]="game.gameType"
+              >
+                {{ game.gameType }}
               </option>
             </select>
             <div
@@ -271,6 +274,21 @@
             >
               Day & Date is required.
             </div>
+            <label for="time">Time</label>
+            <input
+              type="text"
+              name="time"
+              id="time"
+              formControlName="time"
+              [ngClass]="{ 'is-invalid': fvaltoc['time'].errors }"
+              class="form-control"
+            />
+            <div
+              *ngIf="fvaltoc['time'].errors && submitted"
+              class="invalid-feedback"
+            >
+              Time is required.
+            </div>
             <label for="seats">Seats</label>
             <input
               type="text"
@@ -325,8 +343,11 @@
               class="form-control"
               [ngClass]="{ 'is-invalid': fvaltoc['gameType'].errors }"
             >
-              <option *ngFor="let game of scheduleGames" [value]="game.type">
-                {{ game.type }}
+              <option
+                *ngFor="let game of scheduleGames"
+                [value]="game.gameType"
+              >
+                {{ game.gameType }}
               </option>
             </select>
             <div
@@ -396,6 +417,21 @@
               class="invalid-feedback"
             >
               Day & Date is required.
+            </div>
+            <label for="time">Time</label>
+            <input
+              type="text"
+              name="time"
+              id="time"
+              formControlName="time"
+              [ngClass]="{ 'is-invalid': fvalupdatetoc['time'].errors }"
+              class="form-control"
+            />
+            <div
+              *ngIf="fvalupdatetoc['time'].errors && submitted"
+              class="invalid-feedback"
+            >
+              Time is required.
             </div>
             <label for="seats">Seats</label>
             <input
@@ -639,14 +675,14 @@
           }
         </select>
         <br />
-        <button
+        <!-- <button
           type="button"
           class="btn-custom"
           data-bs-toggle="modal"
           data-bs-target="#AddTocModal"
         >
           Add TOC
-        </button>
+        </button> -->
       </div>
       <br />
 
@@ -733,6 +769,7 @@
               <tr>
                 <th>Day & Date</th>
                 <th>Game</th>
+                <th>Time</th>
                 <th>Description</th>
                 <th>Buy-in</th>
                 <th>Seats</th>
@@ -743,6 +780,7 @@
               <tr *ngFor="let toc of tocSettings">
                 <td>{{ toc.day_date }}</td>
                 <td>{{ toc.gameType }}</td>
+                <td>{{ toc.time }}</td>
                 <td>{{ toc.description }}</td>
                 <td>{{ toc.buy_in }}</td>
                 <td>{{ toc.seats }}</td>

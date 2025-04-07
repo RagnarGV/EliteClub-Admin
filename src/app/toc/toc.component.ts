@@ -77,6 +77,7 @@ export class TocComponent {
     this.AddTocSettingsForm = this.fb.group({
       day_date: ['', Validators.required],
       gameType: ['', Validators.required],
+      time: ['', Validators.required],
       description: ['', Validators.required],
       is_live: [Boolean, false],
       buy_in: ['', Validators.required],
@@ -85,6 +86,7 @@ export class TocComponent {
     this.UpdateTocSettingsForm = this.fb.group({
       day_date: ['', Validators.required],
       gameType: ['', Validators.required],
+      time: ['', Validators.required],
       description: ['', Validators.required],
       is_live: [Boolean, false],
       buy_in: ['', Validators.required],
@@ -136,14 +138,16 @@ export class TocComponent {
       return;
     }
 
-    const newToc = {
-      firstName: this.AddForm.controls['firstName'].value,
-      lastInitial: this.AddForm.controls['lastInitial'].value,
-      phone: this.AddForm.controls['phone'].value,
-      gameType: this.AddForm.controls['gameType'].value,
-      smsUpdates: this.AddForm.controls['smsUpdates'].value,
-      checkedIn: this.AddForm.controls['checkedIn'].value,
-    };
+    // const newToc = {
+    //   firstName: this.AddForm.controls['firstName'].value,
+    //   lastInitial: this.AddForm.controls['lastInitial'].value,
+    //   phone: this.AddForm.controls['phone'].value,
+    //   gameType: this.AddForm.controls['gameType'].value,
+    //   smsUpdates: this.AddForm.controls['smsUpdates'].value,
+    //   checkedIn: this.AddForm.controls['checkedIn'].value,
+    // };
+
+    const newToc = this.AddForm.value;
 
     this.services.addToToc(newToc).then(
       (data) => {
@@ -199,14 +203,16 @@ export class TocComponent {
       return;
     }
 
-    const updatedData = {
-      firstName: this.UpdateForm.controls['firstName'].value,
-      lastInitial: this.UpdateForm.controls['lastInitial'].value,
-      phone: this.UpdateForm.controls['phone'].value,
-      gameType: this.UpdateForm.controls['gameType'].value,
-      smsUpdates: this.UpdateForm.controls['smsUpdates'].value,
-      checkedIn: this.UpdateForm.controls['checkedIn'].value,
-    };
+    // const updatedData = {
+    //   firstName: this.UpdateForm.controls['firstName'].value,
+    //   lastInitial: this.UpdateForm.controls['lastInitial'].value,
+    //   phone: this.UpdateForm.controls['phone'].value,
+    //   gameType: this.UpdateForm.controls['gameType'].value,
+    //   smsUpdates: this.UpdateForm.controls['smsUpdates'].value,
+    //   checkedIn: this.UpdateForm.controls['checkedIn'].value,
+    // };
+
+    const updatedData = this.UpdateForm.value;
 
     this.services.updateToToc(this.updateId, updatedData).then(
       (data) => {
